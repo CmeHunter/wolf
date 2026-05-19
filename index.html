@@ -1382,7 +1382,16 @@ function goBack() {
 }
 
 // ===== MODALS =====
+function syncTimerSettingsInputs() {
+  document.getElementById('set-seconds').value = timerSettings.seconds;
+  document.getElementById('set-first-warning').value = timerSettings.firstWarning;
+  document.getElementById('set-second-warning').value = timerSettings.secondWarning;
+  document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
+  document.getElementById('set-initial-count').value = timerSettings.initialCount;
+}
+
 function openModal(id) {
+  if (id === 'timer-settings') syncTimerSettingsInputs();
   document.getElementById(id)?.classList.add('active');
 }
 
@@ -1469,11 +1478,7 @@ function persistTimerSelectionState() {
 }
 
 function initTimerScreen() {
-  document.getElementById('set-seconds').value = timerSettings.seconds;
-  document.getElementById('set-first-warning').value = timerSettings.firstWarning;
-  document.getElementById('set-second-warning').value = timerSettings.secondWarning;
-  document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
-  document.getElementById('set-initial-count').value = timerSettings.initialCount;
+  syncTimerSettingsInputs();
   renderExtraHistory();
   timerReset();
 }

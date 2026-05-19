@@ -112,3 +112,10 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(html, /\.phase-duration\s*\{[^}]*font-size:\s*14px/s);
   assert.ok(!html.includes('font-size:12px;color:var(--text2);padding:8px">尚無紀錄'));
 });
+
+test('timer settings modal refreshes normalized values whenever it opens', () => {
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  assert.match(html, /function syncTimerSettingsInputs\(\)\s*\{[\s\S]*set-first-warning[\s\S]*timerSettings\.firstWarning[\s\S]*set-second-warning[\s\S]*timerSettings\.secondWarning[\s\S]*\}/);
+  assert.match(html, /function openModal\(id\)\s*\{[\s\S]*if\s*\(id === 'timer-settings'\)\s*syncTimerSettingsInputs\(\);[\s\S]*classList\.add\('active'\)/);
+});
