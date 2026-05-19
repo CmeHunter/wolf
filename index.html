@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d0d1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="狼人殺工具">
+<title>狼人殺工具箱</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a14;
+    --bg2: #11111f;
+    --bg3: #1a1a2e;
+    --gold: #c9a84c;
+    --gold2: #e8c96a;
+    --red: #c0392b;
+    --red2: #e74c3c;
+    --blue: #2980b9;
+    --blue2: #3498db;
+    --text: #e8e0d0;
+    --text2: #a09070;
+    --border: #2a2a40;
+    --card: #141428;
+    --accent: #7b3f8c;
+    --accent2: #9b5fb0;
+    --green: #27ae60;
+    --green2: #2ecc71;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Serif TC', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(123,63,140,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+    opacity: 0;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: var(--op, 0.6); }
+  }
+
+  #app { position: relative; z-index: 1; min-height: 100vh; }
+
+  /* ======= SCREENS ======= */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ======= HOME ======= */
+  #home {
+    padding: 40px 20px 30px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-title {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .home-title .moon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 8px;
+    animation: moonFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes moonFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .home-title h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .home-title h2 {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text);
+    text-shadow: 0 0 30px rgba(201,168,76,0.3);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .menu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--card-glow, transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 16px;
+  }
+
+  .menu-card:active { transform: scale(0.96); }
+  .menu-card:active::before { opacity: 1; }
+
+  .menu-card .icon { font-size: 36px; margin-bottom: 10px; display: block; }
+  .menu-card .label { font-size: 15px; font-weight: 700; color: var(--text); }
+  .menu-card .sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  .menu-card:nth-child(1) { --card-glow: radial-gradient(circle, rgba(201,168,76,0.15), transparent); border-color: rgba(201,168,76,0.2); }
+  .menu-card:nth-child(2) { --card-glow: radial-gradient(circle, rgba(41,128,185,0.15), transparent); border-color: rgba(41,128,185,0.2); }
+  .menu-card:nth-child(3) { --card-glow: radial-gradient(circle, rgba(123,63,140,0.15), transparent); border-color: rgba(123,63,140,0.2); }
+  .menu-card:nth-child(4) { --card-glow: radial-gradient(circle, rgba(39,174,96,0.15), transparent); border-color: rgba(39,174,96,0.2); }
+
+  /* ======= SCREEN HEADER ======= */
+  .screen-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,20,0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .back-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 16px;
+    flex-shrink: 0;
+  }
+  .back-btn:active { background: var(--border); }
+
+  .screen-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--gold);
+    flex: 1;
+  }
+
+  .settings-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  /* ======= TIMER SCREEN ======= */
+  .timer-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+  }
+
+  .timer-circle-wrap {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin-bottom: 30px;
+  }
+
+  .timer-svg {
+    width: 240px;
+    height: 240px;
+    transform: rotate(-90deg);
+  }
+
+  .timer-track { fill: none; stroke: var(--border); stroke-width: 8; }
+  .timer-prog {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s linear, stroke 0.3s;
+  }
+
+  .timer-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timer-number {
+    font-family: 'Cinzel', serif;
+    font-size: 68px;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .timer-number.warning { color: var(--red2); text-shadow: 0 0 20px rgba(231,76,60,0.5); }
+
+  .timer-label {
+    font-size: 12px;
+    color: var(--text2);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  .timer-controls {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .btn:active { transform: scale(0.95); }
+
+  .btn-primary { background: var(--gold); color: #000; }
+  .btn-primary:active { background: var(--gold2); }
+  .btn-danger { background: var(--red); color: #fff; }
+  .btn-danger:active { background: var(--red2); }
+  .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+  .btn-blue { background: var(--blue); color: #fff; }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-purple { background: var(--accent); color: #fff; }
+  .btn-sm { padding: 10px 18px; font-size: 14px; }
+
+  /* Extra time panel */
+  .extra-time-panel {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: none;
+  }
+
+  .extra-time-panel.visible { display: block; }
+
+  .panel-title {
+    font-size: 14px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+
+  .number-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .num-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 10px 0;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .num-btn.selected {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
+
+  .num-btn:active { transform: scale(0.93); }
+
+  .extra-action-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* ======= SETTINGS MODAL ======= */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal-sheet {
+    background: var(--bg2);
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px 40px;
+    width: 100%;
+    max-width: 480px;
+    border-top: 1px solid var(--border);
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+
+  .form-label {
+    font-size: 14px;
+    color: var(--text2);
+    flex: 1;
+  }
+
+  .form-input {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    width: 90px;
+    text-align: center;
+    -webkit-appearance: none;
+  }
+
+  .form-input:focus { outline: none; border-color: var(--gold); }
+
+  /* ======= DRAW SCREEN ======= */
+  .draw-content {
+    flex: 1;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .exclude-section {
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 20px;
+  }
+
+  .section-label {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .result-card {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    margin-bottom: 24px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .result-big {
+    font-family: 'Cinzel', serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4);
+    line-height: 1;
+  }
+
+  .result-sub {
+    font-size: 18px;
+    color: var(--text2);
+    margin-top: 8px;
+  }
+
+  .result-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .order-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .order-btn {
+    flex: 1;
+    padding: 12px;
+    background: var(--bg3);
+    border: none;
+    color: var(--text2);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .order-btn.active { background: var(--gold); color: #000; font-weight: 700; }
+
+  /* ======= NIGHT TIMER ======= */
+  .night-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .phase-list {
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 24px;
+  }
+
+  .phase-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    gap: 12px;
+  }
+
+  .phase-item.active {
+    background: rgba(123,63,140,0.2);
+    border-color: var(--accent2);
+  }
+
+  .phase-item.done {
+    opacity: 0.4;
+  }
+
+  .phase-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  .phase-item.active .phase-num {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .phase-item.done .phase-num {
+    background: var(--green);
+    color: #fff;
+  }
+
+  .phase-info { flex: 1; }
+  .phase-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .phase-duration { font-size: 12px; color: var(--text2); }
+
+  .phase-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 60px;
+    padding: 6px;
+    border-radius: 6px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .night-timer-display {
+    font-family: 'Cinzel', serif;
+    font-size: 80px;
+    font-weight: 900;
+    color: var(--accent2);
+    text-align: center;
+    margin-bottom: 8px;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(155,95,176,0.4);
+    transition: color 0.3s;
+  }
+
+  .night-timer-display.warning { color: var(--red2); text-shadow: 0 0 30px rgba(231,76,60,0.5); }
+
+  .night-phase-label {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    min-height: 20px;
+  }
+
+  /* ======= CARD DRAW ======= */
+  .cards-content {
+    flex: 1;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cards-result {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .role-card {
+    width: 140px;
+    height: 190px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    cursor: default;
+  }
+
+  .role-card .role-emoji { font-size: 44px; margin-bottom: 10px; }
+  .role-card .role-name { font-size: 16px; letter-spacing: 1px; }
+
+  .role-card.magician { background: linear-gradient(135deg, #1a1a6e, #3d3d9e); }
+  .role-card.dreamcatcher { background: linear-gradient(135deg, #4a0060, #9b2fae); }
+  .role-card.witch { background: linear-gradient(135deg, #0d4a2a, #1a8a4a); }
+  .role-card.bear { background: linear-gradient(135deg, #5a3010, #8a4a20); }
+  .role-card.hunter { background: linear-gradient(135deg, #5a0000, #a01010); }
+  .role-card.seer { background: linear-gradient(135deg, #004a4a, #008a8a); }
+  .role-card.empty {
+    background: var(--card);
+    border: 2px dashed var(--border);
+    color: var(--text2);
+  }
+
+  .role-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .all-roles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 20px;
+  }
+
+  .role-chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .role-chip .r-emoji { display: block; font-size: 24px; margin-bottom: 4px; }
+
+  /* ======= HISTORY ======= */
+  .history-section {
+    width: 100%;
+    max-width: 360px;
+    margin-top: 16px;
+  }
+
+  .history-title {
+    font-size: 12px;
+    color: var(--text2);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 160px;
+    overflow-y: auto;
+  }
+
+  .history-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--text2);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .history-item span { color: var(--text); }
+
+  /* ======= ANIMATION ======= */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.3); opacity: 0; }
+  }
+
+  .pulse-ring {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 3px solid var(--red);
+    animation: pulse-ring 0.8s ease-out infinite;
+    display: none;
+  }
+
+  .pulse-ring.active { display: block; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  .shaking { animation: shake 0.1s ease-in-out infinite; }
+
+  @keyframes spin-reveal {
+    from { transform: rotateY(90deg); opacity: 0; }
+    to { transform: rotateY(0); opacity: 1; }
+  }
+
+  .spin-in { animation: spin-reveal 0.5s ease forwards; }
+
+  @keyframes bounce-in {
+    0% { transform: scale(0.3); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .bounce-in { animation: bounce-in 0.5s ease forwards; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 16px 0; width: 100%; max-width: 360px; }
+
+  /* Night edit modal extra */
+  .phase-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .phase-edit-label {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text2);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Extra time badge */
+  .extra-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+
+  /* Info text */
+  .info-text {
+    font-size: 12px;
+    color: var(--text2);
+    text-align: center;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .full-btn {
+    width: 100%;
+    max-width: 360px;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 17px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div id="app">
+
+  <!-- ============ HOME ============ -->
+  <div class="screen active" id="home">
+    <div class="home-title">
+      <span class="moon">🌕</span>
+      <h1>Werewolf Tools</h1>
+      <h2>狼人殺工具箱</h2>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="goTo('timer-screen')">
+        <span class="icon">⏱️</span>
+        <div class="label">發言計時</div>
+        <div class="sub">90秒倒數</div>
+      </div>
+      <div class="menu-card" onclick="goTo('draw-screen')">
+        <span class="icon">🎲</span>
+        <div class="label">抽發言順序</div>
+        <div class="sub">1~12號隨機</div>
+      </div>
+      <div class="menu-card" onclick="goTo('night-screen')">
+        <span class="icon">🌙</span>
+        <div class="label">夜間流程</div>
+        <div class="sub">連續計時</div>
+      </div>
+      <div class="menu-card" onclick="goTo('cards-screen')">
+        <span class="icon">🃏</span>
+        <div class="label">版型抽籤</div>
+        <div class="sub">6選2</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TIMER SCREEN ============ -->
+  <div class="screen" id="timer-screen">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goBack()">← 返回</button>
+      <div class="screen-title">⏱ 發言計時</div>
+      <button class="settings-btn" onclick="openModal('timer-settings')">⚙️</button>
+    </div>
+    <div class="timer-content">
+      <div class="timer-circle-wrap">
+        <div class="pulse-ring" id="pulse-ring"></div>
+        <svg class="timer-svg" viewBox="0 0 240 240">
+          <circle class="timer-track" cx="120" cy="120" r="108"/>
+          <circle class="timer-prog" id="timer-prog" cx="120" cy="120" r="108"
+            stroke-dasharray="678.6" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-inner">
+          <div class="timer-number" id="timer-display">90</div>
+          <div class="timer-label">SECONDS</div>
+        </div>
+      </div>
+
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="timer-start-btn" onclick="timerToggle()">開始</button>
+        <button class="btn btn-secondary" onclick="timerReset()">重置</button>
+      </div>
+
+      <div class="extra-time-panel" id="extra-panel">
+        <div class="panel-title">⚡ 加時 60 秒 — 選擇使用號碼</div>
+        <div class="number-grid" id="extra-number-grid"></div>
+        <div class="extra-action-row">
+          <button class="btn btn-green btn-sm" style="flex:1" onclick="applyExtraTime()">確認加時</button>
+          <button class="btn btn-secondary btn-sm" onclick="closeExtraPanel()">取消</button>
+        </div>
+        <div class="info-text" id="extra-remain-text"></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="history-section">
+        <div class="history-title">📋 加時紀錄</div>
+        <div class="history-list" id="extra-history"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DRAW SCREEN ============ -->
+  <div class="screen" id="draw-screen">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goBack()">← 返回</button>
+      <div class="screen-title">🎲 抽發言順序</div>
+    </div>
+    <div class="draw-content">
+      <div class="result-card" id="draw-result-card">
+        <div style="font-size:40px; color: var(--text2);">🎲</div>
+        <div style="font-size:14px; color: var(--text2); margin-top:10px;">按下抽籤開始</div>
+      </div>
+
+      <div class="order-toggle">
+        <button class="order-btn active" id="order-btn-asc" onclick="setOrder('asc')">順序 →</button>
+        <button class="order-btn" id="order-btn-desc" onclick="setOrder('desc')">逆序 ←</button>
+      </div>
+
+      <div class="exclude-section">
+        <div class="section-label">🚫 排除號碼（點擊切換）</div>
+        <div class="number-grid" id="exclude-grid"></div>
+      </div>
+
+      <button class="btn btn-primary full-btn" onclick="doDraw()">✨ 開始抽籤</button>
+
+      <div class="history-section" style="margin-top:20px">
+        <div class="history-title">📋 抽籤紀錄</div>
+        <div class="history-list" id="draw-history"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ NIGHT SCREEN ============ -->
+  <div class="screen" id="night-screen">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goBack()">← 返回</button>
+      <div class="screen-title">🌙 夜間流程計時</div>
+      <button class="settings-btn" onclick="openModal('night-settings')">⚙️</button>
+    </div>
+    <div class="night-content">
+      <div class="night-timer-display" id="night-display">--</div>
+      <div class="night-phase-label" id="night-phase-label">尚未開始</div>
+
+      <div class="timer-controls">
+        <button class="btn btn-purple" id="night-start-btn" onclick="nightToggle()">開始</button>
+        <button class="btn btn-secondary" onclick="nightReset()">重置</button>
+      </div>
+
+      <div class="phase-list" id="phase-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ CARDS SCREEN ============ -->
+  <div class="screen" id="cards-screen">
+    <div class="screen-header">
+      <button class="back-btn" onclick="goBack()">← 返回</button>
+      <div class="screen-title">🃏 版型抽籤</div>
+    </div>
+    <div class="cards-content">
+      <div class="cards-result" id="cards-result">
+        <div class="role-card empty"><span style="font-size:36px">?</span><div style="margin-top:8px;font-size:13px">待抽取</div></div>
+        <div class="role-card empty"><span style="font-size:36px">?</span><div style="margin-top:8px;font-size:13px">待抽取</div></div>
+      </div>
+
+      <button class="btn btn-primary full-btn" onclick="doCardDraw()" style="margin-bottom:20px">🎴 重新抽籤</button>
+
+      <div class="all-roles" id="all-roles-display"></div>
+
+      <div class="history-section">
+        <div class="history-title">📋 抽籤紀錄</div>
+        <div class="history-list" id="cards-history"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ MODALS ============ -->
+
+<!-- Timer Settings -->
+<div class="modal-overlay" id="timer-settings">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ 計時設定</div>
+    <div class="form-row">
+      <div class="form-label">倒數秒數</div>
+      <input class="form-input" type="number" id="set-seconds" min="10" max="300" value="90">
+    </div>
+    <div class="form-row">
+      <div class="form-label">警告提示（最後幾秒）</div>
+      <input class="form-input" type="number" id="set-warning" min="5" max="60" value="15">
+    </div>
+    <div class="form-row">
+      <div class="form-label">加時秒數</div>
+      <input class="form-input" type="number" id="set-extra-secs" min="10" max="300" value="60">
+    </div>
+    <div class="form-row">
+      <div class="form-label">加時次數上限</div>
+      <input class="form-input" type="number" id="set-extra-count" min="1" max="12" value="3">
+    </div>
+    <div style="margin-top:8px; display:flex; gap:10px;">
+      <button class="btn btn-primary" style="flex:1" onclick="saveTimerSettings()">儲存</button>
+      <button class="btn btn-secondary" style="flex:1" onclick="closeModal('timer-settings')">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Night Settings -->
+<div class="modal-overlay" id="night-settings">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ 夜間流程設定</div>
+    <div id="night-phase-edit"></div>
+    <div style="margin-top:8px; display:flex; gap:10px;">
+      <button class="btn btn-primary" style="flex:1" onclick="saveNightSettings()">儲存</button>
+      <button class="btn btn-secondary" style="flex:1" onclick="closeModal('night-settings')">取消</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STARS =====
+(function() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.3+Math.random()*0.7}`;
+    c.appendChild(s);
+  }
+})();
+
+// ===== STATE =====
+const LS = {
+  get: (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch { return def; } },
+  set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+
+// ===== NAVIGATION =====
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'timer-screen') initTimerScreen();
+  if (id === 'draw-screen') initDrawScreen();
+  if (id === 'night-screen') initNightScreen();
+  if (id === 'cards-screen') initCardsScreen();
+}
+
+function goBack() {
+  timerStop();
+  nightStop();
+  goTo('home');
+}
+
+// ===== MODALS =====
+function openModal(id) {
+  if (id === 'night-settings') renderNightPhaseEdit();
+  document.getElementById(id).classList.add('active');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); });
+});
+
+// ===== AUDIO =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new AudioCtx();
+  return audioCtx;
+}
+
+function beep(freq, dur, type='sine', vol=0.3) {
+  try {
+    const ctx = getAudioCtx();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = type;
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    o.start(ctx.currentTime);
+    o.stop(ctx.currentTime + dur);
+  } catch(e) {}
+}
+
+function playWarning() {
+  beep(880, 0.1, 'square', 0.2);
+  setTimeout(() => beep(880, 0.1, 'square', 0.2), 150);
+}
+
+function playEnd() {
+  beep(523, 0.2, 'sine', 0.4);
+  setTimeout(() => beep(659, 0.2, 'sine', 0.4), 200);
+  setTimeout(() => beep(784, 0.4, 'sine', 0.4), 400);
+}
+
+function playNightEnd() {
+  beep(440, 0.15, 'triangle', 0.3);
+  setTimeout(() => beep(550, 0.15, 'triangle', 0.3), 180);
+  setTimeout(() => beep(660, 0.3, 'triangle', 0.3), 360);
+}
+
+// ===== TIMER =====
+let timerSettings = LS.get('timerSettings', { seconds: 90, warning: 15, extraSecs: 60, extraCount: 3 });
+let timerState = {
+  remaining: timerSettings.seconds,
+  running: false,
+  interval: null,
+  extraUsed: {},
+  totalExtra: 0,
+  extraHistory: LS.get('extraHistory', [])
+};
+
+const CIRCUMFERENCE = 2 * Math.PI * 108; // 678.6
+
+function initTimerScreen() {
+  document.getElementById('set-seconds').value = timerSettings.seconds;
+  document.getElementById('set-warning').value = timerSettings.warning;
+  document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
+  document.getElementById('set-extra-count').value = timerSettings.extraCount;
+  buildExtraGrid();
+  renderExtraHistory();
+  timerReset();
+}
+
+function buildExtraGrid() {
+  const g = document.getElementById('extra-number-grid');
+  g.innerHTML = '';
+  for (let i = 1; i <= 12; i++) {
+    const b = document.createElement('button');
+    b.className = 'num-btn';
+    b.textContent = i;
+    b.dataset.num = i;
+    b.onclick = () => { b.classList.toggle('selected'); };
+    if (timerState.extraUsed[i]) {
+      b.disabled = true;
+      b.style.opacity = '0.3';
+      b.title = '已使用加時';
+    }
+    g.appendChild(b);
+  }
+}
+
+function updateTimerDisplay() {
+  const s = timerState.remaining;
+  const el = document.getElementById('timer-display');
+  const prog = document.getElementById('timer-prog');
+  const total = timerSettings.seconds + (timerState.totalExtra);
+  const ratio = Math.max(0, s / total);
+  const offset = CIRCUMFERENCE * (1 - ratio);
+  prog.style.strokeDashoffset = offset;
+
+  el.textContent = s;
+
+  const isWarning = s <= timerSettings.warning && s > 0;
+  el.classList.toggle('warning', isWarning || s === 0);
+  document.getElementById('pulse-ring').classList.toggle('active', s === 0);
+
+  if (s === 0) {
+    prog.style.stroke = '#e74c3c';
+    document.querySelector('.timer-circle-wrap').classList.add('shaking');
+    setTimeout(() => document.querySelector('.timer-circle-wrap').classList.remove('shaking'), 600);
+  } else if (isWarning) {
+    prog.style.stroke = '#e74c3c';
+  } else {
+    prog.style.stroke = 'var(--gold)';
+  }
+}
+
+function timerTick() {
+  if (timerState.remaining <= 0) return;
+  timerState.remaining--;
+  updateTimerDisplay();
+
+  if (timerState.remaining === timerSettings.warning) playWarning();
+  if (timerState.remaining === 0) {
+    playEnd();
+    timerStop();
+    openExtraPanel();
+  }
+}
+
+function timerToggle() {
+  if (timerState.running) {
+    timerStop();
+  } else {
+    if (timerState.remaining <= 0) timerReset();
+    getAudioCtx(); // unlock audio
+    timerState.running = true;
+    timerState.interval = setInterval(timerTick, 1000);
+    document.getElementById('timer-start-btn').textContent = '暫停';
+  }
+}
+
+function timerStop() {
+  timerState.running = false;
+  clearInterval(timerState.interval);
+  document.getElementById('timer-start-btn').textContent = '開始';
+}
+
+function timerReset() {
+  timerStop();
+  timerState.remaining = timerSettings.seconds;
+  timerState.totalExtra = 0;
+  timerState.extraUsed = {};
+  closeExtraPanel();
+  updateTimerDisplay();
+  buildExtraGrid();
+  document.getElementById('pulse-ring').classList.remove('active');
+  document.querySelector('.timer-circle-wrap').classList.remove('shaking');
+  document.getElementById('timer-prog').style.stroke = 'var(--gold)';
+}
+
+function openExtraPanel() {
+  const panel = document.getElementById('extra-panel');
+  panel.classList.add('visible');
+  updateExtraRemainText();
+  buildExtraGrid();
+}
+
+function closeExtraPanel() {
+  document.getElementById('extra-panel').classList.remove('visible');
+}
+
+function updateExtraRemainText() {
+  const used = Object.keys(timerState.extraUsed).length;
+  const remain = timerSettings.extraCount - used;
+  document.getElementById('extra-remain-text').textContent = `剩餘加時次數：${remain} 次`;
+}
+
+function applyExtraTime() {
+  const selected = [...document.querySelectorAll('#extra-number-grid .num-btn.selected')];
+  if (!selected.length) { alert('請選擇使用加時的號碼'); return; }
+
+  const usedCount = Object.keys(timerState.extraUsed).length;
+  if (usedCount >= timerSettings.extraCount) {
+    alert(`已達加時次數上限（${timerSettings.extraCount} 次）`);
+    return;
+  }
+
+  const nums = selected.map(b => parseInt(b.dataset.num));
+  nums.forEach(n => { timerState.extraUsed[n] = true; });
+
+  const addSecs = timerSettings.extraSecs;
+  timerState.remaining += addSecs;
+  timerState.totalExtra += addSecs;
+
+  // history
+  const rec = { nums, secs: addSecs, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit'}) };
+  timerState.extraHistory.unshift(rec);
+  if (timerState.extraHistory.length > 10) timerState.extraHistory.pop();
+  LS.set('extraHistory', timerState.extraHistory);
+
+  closeExtraPanel();
+  updateTimerDisplay();
+  renderExtraHistory();
+
+  // restart
+  timerState.running = true;
+  timerState.interval = setInterval(timerTick, 1000);
+  document.getElementById('timer-start-btn').textContent = '暫停';
+  document.getElementById('timer-prog').style.stroke = 'var(--gold)';
+  document.getElementById('timer-display').classList.remove('warning');
+}
+
+function renderExtraHistory() {
+  const el = document.getElementById('extra-history');
+  const h = timerState.extraHistory;
+  if (!h.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
+  el.innerHTML = h.map(r => `<div class="history-item"><span>${r.nums.join(', ')} 號</span><span>+${r.secs}秒 ${r.time}</span></div>`).join('');
+}
+
+function saveTimerSettings() {
+  timerSettings.seconds = parseInt(document.getElementById('set-seconds').value) || 90;
+  timerSettings.warning = parseInt(document.getElementById('set-warning').value) || 15;
+  timerSettings.extraSecs = parseInt(document.getElementById('set-extra-secs').value) || 60;
+  timerSettings.extraCount = parseInt(document.getElementById('set-extra-count').value) || 3;
+  LS.set('timerSettings', timerSettings);
+  closeModal('timer-settings');
+  timerReset();
+}
+
+// ===== DRAW =====
+let drawOrder = 'asc';
+let excludedNums = LS.get('excludedNums', []);
+let drawHistory = LS.get('drawHistory', []);
+
+function initDrawScreen() {
+  buildExcludeGrid();
+  renderDrawHistory();
+}
+
+function buildExcludeGrid() {
+  const g = document.getElementById('exclude-grid');
+  g.innerHTML = '';
+  for (let i = 1; i <= 12; i++) {
+    const b = document.createElement('button');
+    b.className = 'num-btn' + (excludedNums.includes(i) ? ' selected' : '');
+    b.textContent = i;
+    b.style.opacity = excludedNums.includes(i) ? '0.4' : '1';
+    b.style.textDecoration = excludedNums.includes(i) ? 'line-through' : 'none';
+    b.onclick = () => toggleExclude(i, b);
+    g.appendChild(b);
+  }
+}
+
+function toggleExclude(n, btn) {
+  const idx = excludedNums.indexOf(n);
+  if (idx >= 0) {
+    excludedNums.splice(idx, 1);
+    btn.classList.remove('selected');
+    btn.style.opacity = '1';
+    btn.style.textDecoration = 'none';
+  } else {
+    excludedNums.push(n);
+    btn.classList.add('selected');
+    btn.style.opacity = '0.4';
+    btn.style.textDecoration = 'line-through';
+  }
+  LS.set('excludedNums', excludedNums);
+}
+
+function setOrder(o) {
+  drawOrder = o;
+  document.getElementById('order-btn-asc').classList.toggle('active', o === 'asc');
+  document.getElementById('order-btn-desc').classList.toggle('active', o === 'desc');
+}
+
+function doDraw() {
+  getAudioCtx();
+  const pool = [];
+  for (let i = 1; i <= 12; i++) { if (!excludedNums.includes(i)) pool.push(i); }
+  if (!pool.length) { alert('所有號碼都被排除了！'); return; }
+
+  const num = pool[Math.floor(Math.random() * pool.length)];
+  const orderLabel = drawOrder === 'asc' ? '順序' : '逆序';
+
+  const card = document.getElementById('draw-result-card');
+  card.innerHTML = `
+    <div class="result-big bounce-in">${num}</div>
+    <div class="result-sub">號</div>
+    <div class="result-tag">${orderLabel}</div>
+  `;
+
+  beep(660, 0.1);
+  setTimeout(() => beep(784, 0.1), 120);
+  setTimeout(() => beep(1047, 0.2), 240);
+
+  const rec = { num, order: orderLabel, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit'}) };
+  drawHistory.unshift(rec);
+  if (drawHistory.length > 10) drawHistory.pop();
+  LS.set('drawHistory', drawHistory);
+  renderDrawHistory();
+}
+
+function renderDrawHistory() {
+  const el = document.getElementById('draw-history');
+  if (!drawHistory.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
+  el.innerHTML = drawHistory.map(r => `<div class="history-item"><span>${r.num} 號・${r.order}</span><span>${r.time}</span></div>`).join('');
+}
+
+// ===== NIGHT TIMER =====
+const defaultPhases = [
+  { name: '準備／入夜', secs: 30 },
+  { name: '狼人行動', secs: 60 },
+  { name: '預言家查驗', secs: 30 },
+  { name: '女巫行動', secs: 30 },
+  { name: '天亮討論', secs: 30 },
+];
+
+let nightPhases = LS.get('nightPhases', defaultPhases);
+let nightState = {
+  running: false,
+  phase: 0,
+  remaining: 0,
+  interval: null,
+};
+
+function initNightScreen() {
+  renderPhaseList();
+  nightReset();
+}
+
+function renderPhaseList() {
+  const el = document.getElementById('phase-list');
+  el.innerHTML = nightPhases.map((p, i) => `
+    <div class="phase-item ${i === nightState.phase && nightState.remaining > 0 ? 'active' : ''} ${i < nightState.phase ? 'done' : ''}" id="phase-${i}">
+      <div class="phase-num">${i < nightState.phase ? '✓' : i + 1}</div>
+      <div class="phase-info">
+        <div class="phase-name">${p.name}</div>
+        <div class="phase-duration">${p.secs} 秒</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderNightPhaseEdit() {
+  const el = document.getElementById('night-phase-edit');
+  el.innerHTML = nightPhases.map((p, i) => `
+    <div class="phase-edit-row">
+      <div class="phase-edit-label">${i + 1}. ${p.name}</div>
+      <input class="form-input" type="number" id="np-${i}" min="5" max="600" value="${p.secs}">
+      <span style="font-size:12px;color:var(--text2)">秒</span>
+    </div>
+  `).join('') + `
+    <div style="margin-top:12px">
+      <button class="btn btn-secondary btn-sm" onclick="addNightPhase()">＋ 新增段落</button>
+    </div>
+  `;
+}
+
+function addNightPhase() {
+  nightPhases.push({ name: `段落 ${nightPhases.length + 1}`, secs: 30 });
+  renderNightPhaseEdit();
+}
+
+function saveNightSettings() {
+  nightPhases.forEach((p, i) => {
+    const v = parseInt(document.getElementById(`np-${i}`)?.value);
+    if (v) p.secs = v;
+  });
+  LS.set('nightPhases', nightPhases);
+  closeModal('night-settings');
+  nightReset();
+}
+
+function nightReset() {
+  nightStop();
+  nightState.phase = 0;
+  nightState.remaining = nightPhases[0]?.secs || 30;
+  renderPhaseList();
+  updateNightDisplay();
+  document.getElementById('night-start-btn').textContent = '開始';
+}
+
+function updateNightDisplay() {
+  const d = document.getElementById('night-display');
+  const l = document.getElementById('night-phase-label');
+  d.textContent = nightState.remaining;
+  const isWarning = nightState.remaining <= 5 && nightState.remaining > 0;
+  d.classList.toggle('warning', isWarning);
+  if (nightState.phase < nightPhases.length) {
+    l.textContent = `第 ${nightState.phase + 1} 段：${nightPhases[nightState.phase].name}`;
+  } else {
+    l.textContent = '全部流程完成 ✓';
+    d.textContent = '✓';
+  }
+}
+
+function nightTick() {
+  if (nightState.remaining <= 0) return;
+  nightState.remaining--;
+  updateNightDisplay();
+
+  if (nightState.remaining === 0) {
+    playNightEnd();
+    nightState.phase++;
+    if (nightState.phase < nightPhases.length) {
+      nightState.remaining = nightPhases[nightState.phase].secs;
+      renderPhaseList();
+      updateNightDisplay();
+    } else {
+      nightStop();
+      renderPhaseList();
+      updateNightDisplay();
+      document.getElementById('night-start-btn').textContent = '完成';
+    }
+  }
+}
+
+function nightToggle() {
+  if (nightState.phase >= nightPhases.length) { nightReset(); return; }
+  if (nightState.running) {
+    nightStop();
+  } else {
+    getAudioCtx();
+    nightState.running = true;
+    nightState.interval = setInterval(nightTick, 1000);
+    document.getElementById('night-start-btn').textContent = '暫停';
+    renderPhaseList();
+  }
+}
+
+function nightStop() {
+  nightState.running = false;
+  clearInterval(nightState.interval);
+  if (document.getElementById('night-start-btn')) {
+    document.getElementById('night-start-btn').textContent = nightState.phase >= nightPhases.length ? '完成' : '開始';
+  }
+}
+
+// ===== CARDS =====
+const roles = [
+  { id: 'magician', name: '魔術師', emoji: '🎩', cls: 'magician' },
+  { id: 'dreamcatcher', name: '攝夢人', emoji: '🌀', cls: 'dreamcatcher' },
+  { id: 'witch', name: '女巫', emoji: '🧙‍♀️', cls: 'witch' },
+  { id: 'bear', name: '熊', emoji: '🐻', cls: 'bear' },
+  { id: 'hunter', name: '獵人', emoji: '🏹', cls: 'hunter' },
+  { id: 'seer', name: '預言家', emoji: '🔮', cls: 'seer' },
+];
+
+let cardsHistory = LS.get('cardsHistory', []);
+
+function initCardsScreen() {
+  renderAllRoles();
+  renderCardsHistory();
+}
+
+function renderAllRoles() {
+  const el = document.getElementById('all-roles-display');
+  el.innerHTML = roles.map(r => `
+    <div class="role-chip">
+      <span class="r-emoji">${r.emoji}</span>
+      ${r.name}
+    </div>
+  `).join('');
+}
+
+function doCardDraw() {
+  getAudioCtx();
+  const shuffled = [...roles].sort(() => Math.random() - 0.5);
+  const picked = shuffled.slice(0, 2);
+
+  const el = document.getElementById('cards-result');
+  el.innerHTML = picked.map((r, i) => `
+    <div class="role-card ${r.cls}" style="animation-delay:${i * 0.15}s">
+      <span class="role-emoji">${r.emoji}</span>
+      <div class="role-name">${r.name}</div>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.role-card').forEach(c => c.classList.add('spin-in'));
+
+  beep(523, 0.15);
+  setTimeout(() => beep(659, 0.15), 200);
+  setTimeout(() => beep(784, 0.15), 400);
+  setTimeout(() => beep(1047, 0.3), 600);
+
+  const names = picked.map(r => r.name).join('、');
+  const rec = { names, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit'}) };
+  cardsHistory.unshift(rec);
+  if (cardsHistory.length > 10) cardsHistory.pop();
+  LS.set('cardsHistory', cardsHistory);
+  renderCardsHistory();
+}
+
+function renderCardsHistory() {
+  const el = document.getElementById('cards-history');
+  if (!cardsHistory.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
+  el.innerHTML = cardsHistory.map(r => `<div class="history-item"><span>${r.names}</span><span>${r.time}</span></div>`).join('');
+}
+
+// ===== SERVICE WORKER =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(r => console.log('SW ready:', r.scope))
+      .catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>
