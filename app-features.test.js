@@ -188,9 +188,9 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
   const manifest = fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8');
 
-  assert.match(html, /v2026\.5\.19\.7/);
-  assert.match(sw, /werewolf-tools-v2026\.5\.19\.7/);
-  assert.match(html, /id="app-version">v2026\.5\.19\.7</);
+  assert.match(html, /v2026\.5\.19\.8/);
+  assert.match(sw, /werewolf-tools-v2026\.5\.19\.8/);
+  assert.match(html, /id="app-version">v2026\.5\.19\.8</);
   assert.match(html, /id="timer-pause-btn"/);
   assert.match(html, /id="timer-quick-add-btn"/);
   assert.match(html, /id="timer-quick-restore-btn"/);
@@ -383,6 +383,109 @@ test('timer button helper functions update DOM from current settings', () => {
   assert.equal(elements['timer-preset-90'].textContent, '重設85秒');
   assert.equal(elements['timer-preset-120'].dataset.seconds, '115');
   assert.equal(elements['timer-preset-120'].textContent, '重設115秒');
+});
+
+test('home branding, timer count controls, and footer credits reflect the updated UI copy', () => {
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  assert.match(html, /<title>狼人殺小幫手 v/);
+  assert.match(html, />狼人殺小幫手</);
+  assert.ok(!html.includes('Werewolf Tools'));
+  assert.ok(!html.includes('狼人殺工具箱'));
+  assert.ok(!html.includes('⚡ 加時 60 秒'));
+
+  const speakerGridIndex = html.indexOf('id="speaker-grid"');
+  const minusButtonIndex = html.indexOf('id="count-mode-minus"');
+  const plusButtonIndex = html.indexOf('id="count-mode-plus"');
+  const initializeButtonIndex = html.indexOf('id="initialize-counts-btn"');
+
+  assert.ok(speakerGridIndex !== -1);
+  assert.ok(minusButtonIndex !== -1);
+  assert.ok(plusButtonIndex !== -1);
+  assert.ok(initializeButtonIndex !== -1);
+  assert.ok(speakerGridIndex < minusButtonIndex);
+  assert.ok(speakerGridIndex < plusButtonIndex);
+  assert.ok(speakerGridIndex < initializeButtonIndex);
+
+  const creditMatches = html.match(/Made by Hunter/g) || [];
+  assert.equal(creditMatches.length, 5);
+});
+
+test('clear history handlers also reset the current draw, layout, and card results', () => {
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+  const setCalls = [];
+  let drawResultRenders = 0;
+  let drawHistoryRenders = 0;
+  let layoutResultRenders = 0;
+  let layoutHistoryRenders = 0;
+  let cardsResultRenders = 0;
+  let cardsHistoryRenders = 0;
+
+  const { functions, context } = loadHtmlFunctions(
+    html,
+    ['clearDrawHistory', 'clearLayoutHistory', 'clearCardsHistory'],
+    {
+      drawHistory: [{ num: 7, order: '順序' }],
+      drawCurrentResult: { num: 7, order: '順序' },
+      layoutHistory: [{ name: '夢魘守衛' }],
+      layoutCurrentResult: '夢魘守衛',
+      cardsHistory: [{ names: '女巫、獵人' }],
+      cardsCurrentResult: ['女巫', '獵人'],
+      confirmClearHistory() {
+        return true;
+      },
+      LS: {
+        set(key, value) {
+          setCalls.push([key, value]);
+        }
+      },
+      renderDrawResult() {
+        drawResultRenders++;
+      },
+      renderDrawHistory() {
+        drawHistoryRenders++;
+      },
+      renderLayoutResult() {
+        layoutResultRenders++;
+      },
+      renderLayoutHistory() {
+        layoutHistoryRenders++;
+      },
+      renderCardsResult() {
+        cardsResultRenders++;
+      },
+      renderCardsHistory() {
+        cardsHistoryRenders++;
+      }
+    }
+  );
+
+  functions.clearDrawHistory();
+  functions.clearLayoutHistory();
+  functions.clearCardsHistory();
+
+  assert.deepEqual(Array.from(context.drawHistory), []);
+  assert.equal(context.drawCurrentResult, null);
+  assert.deepEqual(Array.from(context.layoutHistory), []);
+  assert.equal(context.layoutCurrentResult, '');
+  assert.deepEqual(Array.from(context.cardsHistory), []);
+  assert.deepEqual(Array.from(context.cardsCurrentResult), []);
+
+  assert.equal(drawResultRenders, 1);
+  assert.equal(drawHistoryRenders, 1);
+  assert.equal(layoutResultRenders, 1);
+  assert.equal(layoutHistoryRenders, 1);
+  assert.equal(cardsResultRenders, 1);
+  assert.equal(cardsHistoryRenders, 1);
+
+  assert.deepEqual(setCalls.map(([key, value]) => [key, Array.isArray(value) ? Array.from(value) : value]), [
+    ['drawCurrentResult', null],
+    ['drawHistory', []],
+    ['layoutCurrentResult', ''],
+    ['layoutHistory', []],
+    ['cardsCurrentResult', []],
+    ['cardsHistory', []]
+  ]);
 });
 
 test('initialize extra counts asks for confirmation before resetting to one', () => {
