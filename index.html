@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="狼人殺工具">
-<title>狼人殺工具箱 v2026.5.19.6</title>
+<title>狼人殺工具箱 v2026.5.19.7</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
@@ -1207,7 +1207,7 @@
       <span class="moon">🌕</span>
       <h1>Werewolf Tools</h1>
       <h2>狼人殺工具箱</h2>
-      <div class="app-version" id="app-version">v2026.5.19.5</div>
+      <div class="app-version" id="app-version">v2026.5.19.7</div>
     </div>
     <div class="menu-grid">
       <div class="menu-card" onclick="goTo('timer-screen')">
@@ -1265,15 +1265,10 @@
       </div>
 
       <div class="timer-preset-row">
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-30" data-seconds="30" onclick="applyTimerPreset(30)">重設30秒</button>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-60" data-seconds="60" onclick="applyTimerPreset(60)">重設60秒</button>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-90" data-seconds="90" onclick="applyTimerPreset(90)">重設90秒</button>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-120" data-seconds="120" onclick="applyTimerPreset(120)">重設120秒</button>
-      </div>
-
-      <div class="timer-preset-row" id="timer-preset-extra-row" hidden>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-a" data-seconds="0" onclick="applyTimerPreset(this.dataset.seconds)" hidden>重設A秒</button>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-b" data-seconds="0" onclick="applyTimerPreset(this.dataset.seconds)" hidden>重設B秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-30" data-seconds="30" onclick="applyTimerPreset(this.dataset.seconds)">重設30秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-60" data-seconds="60" onclick="applyTimerPreset(this.dataset.seconds)">重設60秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-90" data-seconds="90" onclick="applyTimerPreset(this.dataset.seconds)">重設90秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-120" data-seconds="120" onclick="applyTimerPreset(this.dataset.seconds)">重設120秒</button>
       </div>
 
       <div class="speaker-panel">
@@ -1283,7 +1278,7 @@
           <button class="mode-btn" id="count-mode-plus" onclick="setAdjustMode('increase')">＋ 增加次數</button>
         </div>
         <div class="panel-action-row">
-          <button class="btn btn-secondary btn-sm" id="initialize-counts-btn" onclick="initializeExtraCounts()">所有號碼重設為1(依照設定檔)</button>
+          <button class="btn btn-secondary btn-sm" id="initialize-counts-btn" onclick="initializeExtraCounts()">所有號碼重設為1</button>
         </div>
         <div class="speaker-grid" id="speaker-grid"></div>
       </div>
@@ -1318,8 +1313,10 @@
     <div class="draw-content">
       <div class="result-card" id="draw-result-card">
         <img class="result-card-icon" src="pic/抽發言順序.jpg" alt="">
-        <div style="font-size:18px; color: var(--text2); margin-top:10px;">按下抽籤開始</div>
+        <div style="font-size:18px; color: var(--text2); margin-top:10px;">請按下方按鈕</div>
       </div>
+
+      <button class="btn btn-primary full-btn" id="draw-start-btn" onclick="doDraw()">✨ 開始抽籤</button>
 
       <div class="exclude-section">
         <div class="section-label">🚫 排除號碼（點擊切換）</div>
@@ -1329,8 +1326,6 @@
         </div>
         <div class="number-grid" id="exclude-grid"></div>
       </div>
-
-      <button class="btn btn-primary full-btn" onclick="doDraw()">✨ 開始抽籤</button>
 
       <div class="history-section" style="margin-top:20px">
         <div class="history-header">
@@ -1432,16 +1427,20 @@
       <input class="form-input" type="number" id="set-adjust-secs" min="1" max="300" value="5">
     </div>
     <div class="form-row">
-      <div class="form-label">自訂重設A</div>
-      <input class="form-input" type="number" id="set-reset-a-secs" min="0" max="300" value="0">
+      <div class="form-label">重設按鈕一</div>
+      <input class="form-input" type="number" id="set-preset-30-secs" min="1" max="300" value="30">
     </div>
     <div class="form-row">
-      <div class="form-label">自訂重設B</div>
-      <input class="form-input" type="number" id="set-reset-b-secs" min="0" max="300" value="0">
+      <div class="form-label">重設按鈕二</div>
+      <input class="form-input" type="number" id="set-preset-60-secs" min="1" max="300" value="60">
     </div>
     <div class="form-row">
-      <div class="form-label">初始化次數</div>
-      <input class="form-input" type="number" id="set-initial-count" min="0" max="12" value="1">
+      <div class="form-label">重設按鈕三</div>
+      <input class="form-input" type="number" id="set-preset-90-secs" min="1" max="300" value="90">
+    </div>
+    <div class="form-row">
+      <div class="form-label">重設按鈕四</div>
+      <input class="form-input" type="number" id="set-preset-120-secs" min="1" max="300" value="120">
     </div>
     <div style="margin-top:8px; display:flex; gap:10px;">
       <button class="btn btn-primary" style="flex:1" onclick="saveTimerSettings()">儲存</button>
@@ -1470,7 +1469,7 @@ const LS = {
   set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-const APP_VERSION = 'v2026.5.19.6';
+const APP_VERSION = 'v2026.5.19.7';
 
 const { createHistoryRecord, formatHistoryTimestamp } = window.HistoryFormatters;
 const {
@@ -1505,9 +1504,10 @@ function syncTimerSettingsInputs() {
   document.getElementById('set-second-warning').value = timerSettings.secondWarning;
   document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
   document.getElementById('set-adjust-secs').value = timerSettings.adjustSecs;
-  document.getElementById('set-reset-a-secs').value = timerSettings.resetASecs;
-  document.getElementById('set-reset-b-secs').value = timerSettings.resetBSecs;
-  document.getElementById('set-initial-count').value = timerSettings.initialCount;
+  document.getElementById('set-preset-30-secs').value = timerSettings.preset30Secs;
+  document.getElementById('set-preset-60-secs').value = timerSettings.preset60Secs;
+  document.getElementById('set-preset-90-secs').value = timerSettings.preset90Secs;
+  document.getElementById('set-preset-120-secs').value = timerSettings.preset120Secs;
 }
 
 function openModal(id) {
@@ -1582,7 +1582,7 @@ let timerState = {
   remaining: timerSettings.seconds,
   running: false,
   interval: null,
-  extraCounts: normalizeExtraCounts(LS.get('timerExtraCounts', null), timerSettings.initialCount),
+  extraCounts: normalizeExtraCounts(LS.get('timerExtraCounts', null)),
   selectedNum: normalizeSelectedNum(LS.get('timerSelectedNum', null)),
   adjustMode: LS.get('timerAdjustMode', 'decrease') === 'increase' ? 'increase' : 'decrease',
   alertBase: timerSettings.seconds,
@@ -1638,37 +1638,24 @@ function updateTimerShortcutButtons() {
 }
 
 function updateTimerPresetButtons() {
-  const extraRow = document.getElementById('timer-preset-extra-row');
-  const presetAButton = document.getElementById('timer-preset-a');
-  const presetBButton = document.getElementById('timer-preset-b');
-  const resetASecs = timerSettings.resetASecs;
-  const resetBSecs = timerSettings.resetBSecs;
+  const presetConfigs = [
+    ['timer-preset-30', timerSettings.preset30Secs],
+    ['timer-preset-60', timerSettings.preset60Secs],
+    ['timer-preset-90', timerSettings.preset90Secs],
+    ['timer-preset-120', timerSettings.preset120Secs]
+  ];
 
-  document.querySelectorAll('.timer-preset-btn').forEach((button) => {
-    const seconds = parseInt(button.dataset.seconds, 10);
-    if (Number.isFinite(seconds) && seconds > 0) button.textContent = `重設${seconds}秒`;
+  presetConfigs.forEach(([id, seconds]) => {
+    const button = document.getElementById(id);
+    if (!button) return;
+    button.dataset.seconds = String(seconds);
+    button.textContent = `重設${seconds}秒`;
   });
-
-  if (presetAButton) {
-    presetAButton.hidden = resetASecs <= 0;
-    presetAButton.disabled = resetASecs <= 0;
-    presetAButton.dataset.seconds = String(resetASecs);
-    if (resetASecs > 0) presetAButton.textContent = `重設${resetASecs}秒`;
-  }
-
-  if (presetBButton) {
-    presetBButton.hidden = resetBSecs <= 0;
-    presetBButton.disabled = resetBSecs <= 0;
-    presetBButton.dataset.seconds = String(resetBSecs);
-    if (resetBSecs > 0) presetBButton.textContent = `重設${resetBSecs}秒`;
-  }
-
-  if (extraRow) extraRow.hidden = resetASecs <= 0 && resetBSecs <= 0;
 }
 
 function updateInitializeCountsButton() {
   const button = document.getElementById('initialize-counts-btn');
-  if (button) button.textContent = `所有號碼重設為${timerSettings.initialCount}(依照設定檔)`;
+  if (button) button.textContent = '所有號碼重設為1';
 }
 
 function updateSelectedNumberText() {
@@ -1691,7 +1678,8 @@ function setAdjustMode(mode) {
 }
 
 function initializeExtraCounts() {
-  timerState.extraCounts = createDefaultExtraCounts(timerSettings.initialCount);
+  if (!window.confirm('確定要將所有號碼重設為1嗎？')) return;
+  timerState.extraCounts = createDefaultExtraCounts();
   persistTimerSelectionState();
   renderSpeakerGrid();
   updateExtraRemainText();
@@ -1924,9 +1912,10 @@ function saveTimerSettings() {
     secondWarning: document.getElementById('set-second-warning').value,
     extraSecs: document.getElementById('set-extra-secs').value,
     adjustSecs: document.getElementById('set-adjust-secs').value,
-    resetASecs: document.getElementById('set-reset-a-secs').value,
-    resetBSecs: document.getElementById('set-reset-b-secs').value,
-    initialCount: document.getElementById('set-initial-count').value
+    preset30Secs: document.getElementById('set-preset-30-secs').value,
+    preset60Secs: document.getElementById('set-preset-60-secs').value,
+    preset90Secs: document.getElementById('set-preset-90-secs').value,
+    preset120Secs: document.getElementById('set-preset-120-secs').value
   });
   LS.set('timerSettings', timerSettings);
   closeModal('timer-settings');

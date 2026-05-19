@@ -15,6 +15,10 @@
     secondWarning: 5,
     extraSecs: 60,
     adjustSecs: 5,
+    preset30Secs: 30,
+    preset60Secs: 60,
+    preset90Secs: 90,
+    preset120Secs: 120,
     resetASecs: 0,
     resetBSecs: 0,
     initialCount: 1
@@ -64,6 +68,10 @@
       secondWarning,
       extraSecs: toIntInRange(source.extraSecs, DEFAULT_TIMER_SETTINGS.extraSecs, 1, 300),
       adjustSecs: toIntInRange(resolveAdjustSecs(source), DEFAULT_TIMER_SETTINGS.adjustSecs, 1, 300),
+      preset30Secs: toIntInRange(source.preset30Secs, DEFAULT_TIMER_SETTINGS.preset30Secs, 1, 300),
+      preset60Secs: toIntInRange(source.preset60Secs, DEFAULT_TIMER_SETTINGS.preset60Secs, 1, 300),
+      preset90Secs: toIntInRange(source.preset90Secs, DEFAULT_TIMER_SETTINGS.preset90Secs, 1, 300),
+      preset120Secs: toIntInRange(source.preset120Secs, DEFAULT_TIMER_SETTINGS.preset120Secs, 1, 300),
       resetASecs: toIntInRange(source.resetASecs, DEFAULT_TIMER_SETTINGS.resetASecs, 0, 300),
       resetBSecs: toIntInRange(source.resetBSecs, DEFAULT_TIMER_SETTINGS.resetBSecs, 0, 300),
       initialCount: toIntInRange(
