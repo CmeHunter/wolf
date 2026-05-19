@@ -1,6 +1,7 @@
-const CACHE_NAME = 'werewolf-tools-v1';
+const CACHE_NAME = 'werewolf-tools-v2';
 const ASSETS = [
   './index.html',
+  './history-formatters.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
@@ -12,7 +13,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       // Cache local assets reliably; fonts may fail on first offline install
-      return cache.addAll(['./index.html', './manifest.json', './icon-192.png', './icon-512.png'])
+      return cache.addAll(['./index.html', './history-formatters.js', './manifest.json', './icon-192.png', './icon-512.png'])
         .then(() => cache.add('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Cinzel:wght@400;700;900&display=swap').catch(() => {}));
     })
   );

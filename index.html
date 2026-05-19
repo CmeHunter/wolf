@@ -355,6 +355,93 @@
     gap: 10px;
   }
 
+  .speaker-panel {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+
+  .mode-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .mode-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mode-btn.active {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
+
+  .speaker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .speaker-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 10px;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .speaker-card.selected {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px rgba(201,168,76,0.35);
+    background: rgba(201,168,76,0.12);
+  }
+
+  .speaker-card:active {
+    transform: scale(0.97);
+  }
+
+  .speaker-card-number {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .speaker-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text2);
+    font-size: 12px;
+  }
+
+  .speaker-count {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
   /* ======= SETTINGS MODAL ======= */
   .modal-overlay {
     display: none;
@@ -516,6 +603,90 @@
 
   .order-btn.active { background: var(--gold); color: #000; font-weight: 700; }
 
+  .layout-content {
+    flex: 1;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .layout-result-name {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1.35;
+    text-shadow: 0 0 26px rgba(201,168,76,0.3);
+  }
+
+  .layout-editor {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+  }
+
+  .layout-add-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  .layout-name-input {
+    flex: 1;
+    width: auto;
+    text-align: left;
+  }
+
+  .layout-pool-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .layout-pool-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+  }
+
+  .layout-pool-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .layout-remove-btn {
+    background: transparent;
+    border: 1px solid rgba(231,76,60,0.35);
+    color: #ffb1a8;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .layout-empty {
+    padding: 16px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--border);
+    color: var(--text2);
+    text-align: center;
+    font-size: 13px;
+  }
+
   /* ======= NIGHT TIMER ======= */
   .night-content {
     flex: 1;
@@ -653,6 +824,23 @@
   .role-card .role-emoji { font-size: 44px; margin-bottom: 10px; }
   .role-card .role-name { font-size: 16px; letter-spacing: 1px; }
 
+  .blue-goblet-icon {
+    width: 44px;
+    height: 44px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .role-emoji .blue-goblet-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .r-emoji .blue-goblet-icon {
+    width: 24px;
+    height: 24px;
+  }
+
   .role-card.magician { background: linear-gradient(135deg, #1a1a6e, #3d3d9e); }
   .role-card.dreamcatcher { background: linear-gradient(135deg, #4a0060, #9b2fae); }
   .role-card.witch { background: linear-gradient(135deg, #0d4a2a, #1a8a4a); }
@@ -729,9 +917,20 @@
     color: var(--text2);
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
 
-  .history-item span { color: var(--text); }
+  .history-item span:first-child {
+    color: var(--text);
+    min-width: 0;
+  }
+
+  .history-item span:last-child {
+    color: var(--text2);
+    flex-shrink: 0;
+    font-size: 12px;
+  }
 
   /* ======= ANIMATION ======= */
   @keyframes pulse-ring {
@@ -851,13 +1050,13 @@
         <div class="sub">1~12號隨機</div>
       </div>
       <div class="menu-card" onclick="goTo('night-screen')">
-        <span class="icon">🌙</span>
-        <div class="label">夜間流程</div>
-        <div class="sub">連續計時</div>
+        <span class="icon">🎴</span>
+        <div class="label">版型抽籤</div>
+        <div class="sub">可編輯待抽清單</div>
       </div>
       <div class="menu-card" onclick="goTo('cards-screen')">
         <span class="icon">🃏</span>
-        <div class="label">版型抽籤</div>
+        <div class="label">百變2.0</div>
         <div class="sub">6選2</div>
       </div>
     </div>
@@ -889,9 +1088,19 @@
         <button class="btn btn-secondary" onclick="timerReset()">重置</button>
       </div>
 
+      <div class="speaker-panel">
+        <div class="panel-title">🎯 號碼次數調整</div>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="count-mode-minus" onclick="setAdjustMode('decrease')">− 減少次數</button>
+          <button class="mode-btn" id="count-mode-plus" onclick="setAdjustMode('increase')">＋ 增加次數</button>
+        </div>
+        <div class="info-text" id="selected-number-text"></div>
+        <div class="speaker-grid" id="speaker-grid"></div>
+      </div>
+
       <div class="extra-time-panel" id="extra-panel">
-        <div class="panel-title">⚡ 加時 60 秒 — 選擇使用號碼</div>
-        <div class="number-grid" id="extra-number-grid"></div>
+        <div class="panel-title" id="extra-panel-title">⚡ 加時 60 秒</div>
+        <div class="info-text" id="extra-selected-text"></div>
         <div class="extra-action-row">
           <button class="btn btn-green btn-sm" style="flex:1" onclick="applyExtraTime()">確認加時</button>
           <button class="btn btn-secondary btn-sm" onclick="closeExtraPanel()">取消</button>
@@ -919,11 +1128,6 @@
         <div style="font-size:14px; color: var(--text2); margin-top:10px;">按下抽籤開始</div>
       </div>
 
-      <div class="order-toggle">
-        <button class="order-btn active" id="order-btn-asc" onclick="setOrder('asc')">順序 →</button>
-        <button class="order-btn" id="order-btn-desc" onclick="setOrder('desc')">逆序 ←</button>
-      </div>
-
       <div class="exclude-section">
         <div class="section-label">🚫 排除號碼（點擊切換）</div>
         <div class="number-grid" id="exclude-grid"></div>
@@ -942,19 +1146,30 @@
   <div class="screen" id="night-screen">
     <div class="screen-header">
       <button class="back-btn" onclick="goBack()">← 返回</button>
-      <div class="screen-title">🌙 夜間流程計時</div>
-      <button class="settings-btn" onclick="openModal('night-settings')">⚙️</button>
+      <div class="screen-title">🎴 版型抽籤</div>
     </div>
-    <div class="night-content">
-      <div class="night-timer-display" id="night-display">--</div>
-      <div class="night-phase-label" id="night-phase-label">尚未開始</div>
-
-      <div class="timer-controls">
-        <button class="btn btn-purple" id="night-start-btn" onclick="nightToggle()">開始</button>
-        <button class="btn btn-secondary" onclick="nightReset()">重置</button>
+    <div class="layout-content">
+      <div class="result-card" id="layout-result-card">
+        <div style="font-size:40px; color: var(--text2);">🎴</div>
+        <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
       </div>
 
-      <div class="phase-list" id="phase-list"></div>
+      <button class="btn btn-purple full-btn" id="layout-draw-btn" onclick="doLayoutDraw()" style="margin-bottom:20px">✨ 抽出版型</button>
+
+      <div class="layout-editor">
+        <div class="panel-title">🗂 待抽版型</div>
+        <div class="info-text">預設可直接抽，也可以自行新增或移除版型。</div>
+        <div class="layout-add-row">
+          <input class="form-input layout-name-input" type="text" id="layout-name-input" placeholder="輸入新版本型名稱">
+          <button class="btn btn-secondary btn-sm" id="add-layout-btn" onclick="addLayoutPreset()">＋ 新增</button>
+        </div>
+        <div class="layout-pool-list" id="layout-pool-list"></div>
+      </div>
+
+      <div class="history-section" style="margin-top:20px">
+        <div class="history-title">📋 抽籤紀錄</div>
+        <div class="history-list" id="layout-history"></div>
+      </div>
     </div>
   </div>
 
@@ -962,7 +1177,7 @@
   <div class="screen" id="cards-screen">
     <div class="screen-header">
       <button class="back-btn" onclick="goBack()">← 返回</button>
-      <div class="screen-title">🃏 版型抽籤</div>
+      <div class="screen-title">🃏 百變2.0</div>
     </div>
     <div class="cards-content">
       <div class="cards-result" id="cards-result">
@@ -1013,19 +1228,7 @@
   </div>
 </div>
 
-<!-- Night Settings -->
-<div class="modal-overlay" id="night-settings">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⚙️ 夜間流程設定</div>
-    <div id="night-phase-edit"></div>
-    <div style="margin-top:8px; display:flex; gap:10px;">
-      <button class="btn btn-primary" style="flex:1" onclick="saveNightSettings()">儲存</button>
-      <button class="btn btn-secondary" style="flex:1" onclick="closeModal('night-settings')">取消</button>
-    </div>
-  </div>
-</div>
-
+<script src="history-formatters.js"></script>
 <script>
 // ===== STARS =====
 (function() {
@@ -1044,6 +1247,8 @@ const LS = {
   set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
+const { createHistoryRecord, formatHistoryTimestamp } = window.HistoryFormatters;
+
 // ===== NAVIGATION =====
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1057,18 +1262,16 @@ function goTo(id) {
 
 function goBack() {
   timerStop();
-  nightStop();
   goTo('home');
 }
 
 // ===== MODALS =====
 function openModal(id) {
-  if (id === 'night-settings') renderNightPhaseEdit();
-  document.getElementById(id).classList.add('active');
+  document.getElementById(id)?.classList.add('active');
 }
 
 function closeModal(id) {
-  document.getElementById(id).classList.remove('active');
+  document.getElementById(id)?.classList.remove('active');
 }
 
 document.querySelectorAll('.modal-overlay').forEach(o => {
@@ -1118,43 +1321,114 @@ function playNightEnd() {
 
 // ===== TIMER =====
 let timerSettings = LS.get('timerSettings', { seconds: 90, warning: 15, extraSecs: 60, extraCount: 3 });
+
+function createDefaultExtraCounts() {
+  const counts = {};
+  for (let i = 1; i <= 12; i++) counts[i] = 1;
+  return counts;
+}
+
+function normalizeExtraCounts(saved) {
+  const counts = createDefaultExtraCounts();
+  if (!saved || typeof saved !== 'object') return counts;
+  for (let i = 1; i <= 12; i++) {
+    const value = parseInt(saved[i], 10);
+    if (Number.isFinite(value) && value >= 0) counts[i] = value;
+  }
+  return counts;
+}
+
+function normalizeSelectedNum(saved) {
+  const value = parseInt(saved, 10);
+  return Number.isFinite(value) && value >= 1 && value <= 12 ? value : null;
+}
+
 let timerState = {
   remaining: timerSettings.seconds,
   running: false,
   interval: null,
-  extraUsed: {},
+  extraCounts: normalizeExtraCounts(LS.get('timerExtraCounts', null)),
+  selectedNum: normalizeSelectedNum(LS.get('timerSelectedNum', null)),
+  adjustMode: LS.get('timerAdjustMode', 'decrease') === 'increase' ? 'increase' : 'decrease',
   totalExtra: 0,
+  extraCountUsed: 0,
   extraHistory: LS.get('extraHistory', [])
 };
 
 const CIRCUMFERENCE = 2 * Math.PI * 108; // 678.6
+
+function persistTimerSelectionState() {
+  LS.set('timerExtraCounts', timerState.extraCounts);
+  LS.set('timerSelectedNum', timerState.selectedNum);
+  LS.set('timerAdjustMode', timerState.adjustMode);
+}
 
 function initTimerScreen() {
   document.getElementById('set-seconds').value = timerSettings.seconds;
   document.getElementById('set-warning').value = timerSettings.warning;
   document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
   document.getElementById('set-extra-count').value = timerSettings.extraCount;
-  buildExtraGrid();
   renderExtraHistory();
   timerReset();
 }
 
-function buildExtraGrid() {
-  const g = document.getElementById('extra-number-grid');
+function updateAdjustModeButtons() {
+  document.getElementById('count-mode-minus').classList.toggle('active', timerState.adjustMode === 'decrease');
+  document.getElementById('count-mode-plus').classList.toggle('active', timerState.adjustMode === 'increase');
+}
+
+function updateSelectedNumberText() {
+  const selected = timerState.selectedNum;
+  const modeText = timerState.adjustMode === 'increase' ? '增加次數' : '減少次數';
+  const selectedText = document.getElementById('selected-number-text');
+  const extraSelectedText = document.getElementById('extra-selected-text');
+  const panelTitle = document.getElementById('extra-panel-title');
+
+  if (panelTitle) panelTitle.textContent = `⚡ 加時 ${timerSettings.extraSecs} 秒`;
+
+  if (selectedText) {
+    if (selected) {
+      selectedText.textContent = `目前選擇 ${selected} 號，次數 ${timerState.extraCounts[selected]}，點擊號碼會${modeText}`;
+    } else {
+      selectedText.textContent = `尚未選擇號碼，點擊號碼會${modeText}`;
+    }
+  }
+
+  if (extraSelectedText) {
+    extraSelectedText.textContent = selected ? `本次加時對象：${selected} 號` : '請先在上方選擇號碼';
+  }
+}
+
+function setAdjustMode(mode) {
+  timerState.adjustMode = mode === 'increase' ? 'increase' : 'decrease';
+  persistTimerSelectionState();
+  updateAdjustModeButtons();
+  updateSelectedNumberText();
+}
+
+function handleSpeakerSelect(num) {
+  const current = timerState.extraCounts[num] ?? 1;
+  const next = timerState.adjustMode === 'increase' ? current + 1 : Math.max(0, current - 1);
+  timerState.selectedNum = num;
+  timerState.extraCounts[num] = next;
+  persistTimerSelectionState();
+  renderSpeakerGrid();
+}
+
+function renderSpeakerGrid() {
+  const g = document.getElementById('speaker-grid');
   g.innerHTML = '';
   for (let i = 1; i <= 12; i++) {
     const b = document.createElement('button');
-    b.className = 'num-btn';
-    b.textContent = i;
+    b.type = 'button';
+    b.className = 'speaker-card' + (timerState.selectedNum === i ? ' selected' : '');
     b.dataset.num = i;
-    b.onclick = () => { b.classList.toggle('selected'); };
-    if (timerState.extraUsed[i]) {
-      b.disabled = true;
-      b.style.opacity = '0.3';
-      b.title = '已使用加時';
-    }
+    b.innerHTML = `<span class="speaker-card-number">${i} 號</span><span class="speaker-card-meta"><span>次數</span><span class="speaker-count">${timerState.extraCounts[i]}</span></span>`;
+    b.onclick = () => { handleSpeakerSelect(i); };
     g.appendChild(b);
   }
+  updateAdjustModeButtons();
+  updateSelectedNumberText();
 }
 
 function updateTimerDisplay() {
@@ -1188,7 +1462,7 @@ function timerTick() {
   timerState.remaining--;
   updateTimerDisplay();
 
-  if (timerState.remaining === timerSettings.warning) playWarning();
+  if (timerState.remaining <= timerSettings.warning && timerState.remaining > 0) playWarning();
   if (timerState.remaining === 0) {
     playEnd();
     timerStop();
@@ -1211,6 +1485,7 @@ function timerToggle() {
 function timerStop() {
   timerState.running = false;
   clearInterval(timerState.interval);
+  timerState.interval = null;
   document.getElementById('timer-start-btn').textContent = '開始';
 }
 
@@ -1218,10 +1493,11 @@ function timerReset() {
   timerStop();
   timerState.remaining = timerSettings.seconds;
   timerState.totalExtra = 0;
-  timerState.extraUsed = {};
+  timerState.extraCountUsed = 0;
   closeExtraPanel();
   updateTimerDisplay();
-  buildExtraGrid();
+  renderSpeakerGrid();
+  updateExtraRemainText();
   document.getElementById('pulse-ring').classList.remove('active');
   document.querySelector('.timer-circle-wrap').classList.remove('shaking');
   document.getElementById('timer-prog').style.stroke = 'var(--gold)';
@@ -1231,7 +1507,7 @@ function openExtraPanel() {
   const panel = document.getElementById('extra-panel');
   panel.classList.add('visible');
   updateExtraRemainText();
-  buildExtraGrid();
+  updateSelectedNumberText();
 }
 
 function closeExtraPanel() {
@@ -1239,36 +1515,35 @@ function closeExtraPanel() {
 }
 
 function updateExtraRemainText() {
-  const used = Object.keys(timerState.extraUsed).length;
-  const remain = timerSettings.extraCount - used;
+  const remain = Math.max(0, timerSettings.extraCount - timerState.extraCountUsed);
   document.getElementById('extra-remain-text').textContent = `剩餘加時次數：${remain} 次`;
 }
 
 function applyExtraTime() {
-  const selected = [...document.querySelectorAll('#extra-number-grid .num-btn.selected')];
-  if (!selected.length) { alert('請選擇使用加時的號碼'); return; }
+  if (!timerState.selectedNum) { alert('請先在上方選擇使用加時的號碼'); return; }
 
-  const usedCount = Object.keys(timerState.extraUsed).length;
-  if (usedCount >= timerSettings.extraCount) {
+  if (timerState.extraCountUsed >= timerSettings.extraCount) {
     alert(`已達加時次數上限（${timerSettings.extraCount} 次）`);
     return;
   }
 
-  const nums = selected.map(b => parseInt(b.dataset.num));
-  nums.forEach(n => { timerState.extraUsed[n] = true; });
+  const nums = [timerState.selectedNum];
+  timerState.extraCountUsed++;
 
   const addSecs = timerSettings.extraSecs;
   timerState.remaining += addSecs;
   timerState.totalExtra += addSecs;
 
   // history
-  const rec = { nums, secs: addSecs, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit'}) };
+  const rec = createHistoryRecord({ nums, secs: addSecs });
   timerState.extraHistory.unshift(rec);
   if (timerState.extraHistory.length > 10) timerState.extraHistory.pop();
   LS.set('extraHistory', timerState.extraHistory);
 
   closeExtraPanel();
   updateTimerDisplay();
+  updateExtraRemainText();
+  updateSelectedNumberText();
   renderExtraHistory();
 
   // restart
@@ -1283,7 +1558,7 @@ function renderExtraHistory() {
   const el = document.getElementById('extra-history');
   const h = timerState.extraHistory;
   if (!h.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
-  el.innerHTML = h.map(r => `<div class="history-item"><span>${r.nums.join(', ')} 號</span><span>+${r.secs}秒 ${r.time}</span></div>`).join('');
+  el.innerHTML = h.map(r => `<div class="history-item"><span>${r.nums.join(', ')} 號</span><span>+${r.secs}秒 ${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
 function saveTimerSettings() {
@@ -1297,7 +1572,6 @@ function saveTimerSettings() {
 }
 
 // ===== DRAW =====
-let drawOrder = 'asc';
 let excludedNums = LS.get('excludedNums', []);
 let drawHistory = LS.get('drawHistory', []);
 
@@ -1336,12 +1610,6 @@ function toggleExclude(n, btn) {
   LS.set('excludedNums', excludedNums);
 }
 
-function setOrder(o) {
-  drawOrder = o;
-  document.getElementById('order-btn-asc').classList.toggle('active', o === 'asc');
-  document.getElementById('order-btn-desc').classList.toggle('active', o === 'desc');
-}
-
 function doDraw() {
   getAudioCtx();
   const pool = [];
@@ -1349,7 +1617,7 @@ function doDraw() {
   if (!pool.length) { alert('所有號碼都被排除了！'); return; }
 
   const num = pool[Math.floor(Math.random() * pool.length)];
-  const orderLabel = drawOrder === 'asc' ? '順序' : '逆序';
+  const orderLabel = Math.random() < 0.5 ? '順序' : '逆序';
 
   const card = document.getElementById('draw-result-card');
   card.innerHTML = `
@@ -1362,7 +1630,7 @@ function doDraw() {
   setTimeout(() => beep(784, 0.1), 120);
   setTimeout(() => beep(1047, 0.2), 240);
 
-  const rec = { num, order: orderLabel, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit'}) };
+  const rec = createHistoryRecord({ num, order: orderLabel });
   drawHistory.unshift(rec);
   if (drawHistory.length > 10) drawHistory.pop();
   LS.set('drawHistory', drawHistory);
@@ -1372,143 +1640,129 @@ function doDraw() {
 function renderDrawHistory() {
   const el = document.getElementById('draw-history');
   if (!drawHistory.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
-  el.innerHTML = drawHistory.map(r => `<div class="history-item"><span>${r.num} 號・${r.order}</span><span>${r.time}</span></div>`).join('');
+  el.innerHTML = drawHistory.map(r => `<div class="history-item"><span>${r.num} 號・${r.order}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
-// ===== NIGHT TIMER =====
-const defaultPhases = [
-  { name: '準備／入夜', secs: 30 },
-  { name: '狼人行動', secs: 60 },
-  { name: '預言家查驗', secs: 30 },
-  { name: '女巫行動', secs: 30 },
-  { name: '天亮討論', secs: 30 },
-];
+// ===== LAYOUT DRAW =====
+const defaultLayoutPresets = ['機械狼通靈師', '百變2.0', '夢魘守衛', '預女獵白混'];
 
-let nightPhases = LS.get('nightPhases', defaultPhases);
-let nightState = {
-  running: false,
-  phase: 0,
-  remaining: 0,
-  interval: null,
-};
+function normalizeLayoutPresets(saved) {
+  if (!Array.isArray(saved)) return [...defaultLayoutPresets];
+  const cleaned = saved.map((name) => String(name).trim()).filter(Boolean);
+  return cleaned.length ? cleaned : [...defaultLayoutPresets];
+}
+
+let layoutPresets = normalizeLayoutPresets(LS.get('layoutPresets', defaultLayoutPresets));
+let layoutHistory = LS.get('layoutHistory', []);
+let layoutCurrentResult = LS.get('layoutCurrentResult', '');
+
+function persistLayoutPresets() {
+  LS.set('layoutPresets', layoutPresets);
+}
 
 function initNightScreen() {
-  renderPhaseList();
-  nightReset();
+  renderLayoutPool();
+  renderLayoutResult(layoutCurrentResult);
+  renderLayoutHistory();
 }
 
-function renderPhaseList() {
-  const el = document.getElementById('phase-list');
-  el.innerHTML = nightPhases.map((p, i) => `
-    <div class="phase-item ${i === nightState.phase && nightState.remaining > 0 ? 'active' : ''} ${i < nightState.phase ? 'done' : ''}" id="phase-${i}">
-      <div class="phase-num">${i < nightState.phase ? '✓' : i + 1}</div>
-      <div class="phase-info">
-        <div class="phase-name">${p.name}</div>
-        <div class="phase-duration">${p.secs} 秒</div>
-      </div>
+function renderLayoutResult(name = '') {
+  const el = document.getElementById('layout-result-card');
+  if (!el) return;
+
+  if (!name) {
+    el.innerHTML = `
+      <div style="font-size:40px; color: var(--text2);">🎴</div>
+      <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
+    `;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="result-tag">本次抽中</div>
+    <div class="layout-result-name bounce-in" id="layout-result-name">${name}</div>
+  `;
+}
+
+function renderLayoutPool() {
+  const el = document.getElementById('layout-pool-list');
+  if (!el) return;
+
+  if (!layoutPresets.length) {
+    el.innerHTML = '<div class="layout-empty">目前沒有待抽版型，請先新增。</div>';
+    return;
+  }
+
+  el.innerHTML = layoutPresets.map((name, index) => `
+    <div class="layout-pool-item">
+      <span class="layout-pool-name">${name}</span>
+      <button class="layout-remove-btn" data-index="${index}" onclick="removeLayoutPreset(${index})">移除</button>
     </div>
   `).join('');
 }
 
-function renderNightPhaseEdit() {
-  const el = document.getElementById('night-phase-edit');
-  el.innerHTML = nightPhases.map((p, i) => `
-    <div class="phase-edit-row">
-      <div class="phase-edit-label">${i + 1}. ${p.name}</div>
-      <input class="form-input" type="number" id="np-${i}" min="5" max="600" value="${p.secs}">
-      <span style="font-size:12px;color:var(--text2)">秒</span>
-    </div>
-  `).join('') + `
-    <div style="margin-top:12px">
-      <button class="btn btn-secondary btn-sm" onclick="addNightPhase()">＋ 新增段落</button>
-    </div>
-  `;
+function addLayoutPreset() {
+  const input = document.getElementById('layout-name-input');
+  const name = input.value.trim();
+  if (!name) {
+    alert('請輸入版型名稱');
+    return;
+  }
+
+  layoutPresets.push(name);
+  persistLayoutPresets();
+  renderLayoutPool();
+  input.value = '';
 }
 
-function addNightPhase() {
-  nightPhases.push({ name: `段落 ${nightPhases.length + 1}`, secs: 30 });
-  renderNightPhaseEdit();
-}
-
-function saveNightSettings() {
-  nightPhases.forEach((p, i) => {
-    const v = parseInt(document.getElementById(`np-${i}`)?.value);
-    if (v) p.secs = v;
-  });
-  LS.set('nightPhases', nightPhases);
-  closeModal('night-settings');
-  nightReset();
-}
-
-function nightReset() {
-  nightStop();
-  nightState.phase = 0;
-  nightState.remaining = nightPhases[0]?.secs || 30;
-  renderPhaseList();
-  updateNightDisplay();
-  document.getElementById('night-start-btn').textContent = '開始';
-}
-
-function updateNightDisplay() {
-  const d = document.getElementById('night-display');
-  const l = document.getElementById('night-phase-label');
-  d.textContent = nightState.remaining;
-  const isWarning = nightState.remaining <= 5 && nightState.remaining > 0;
-  d.classList.toggle('warning', isWarning);
-  if (nightState.phase < nightPhases.length) {
-    l.textContent = `第 ${nightState.phase + 1} 段：${nightPhases[nightState.phase].name}`;
-  } else {
-    l.textContent = '全部流程完成 ✓';
-    d.textContent = '✓';
+function removeLayoutPreset(index) {
+  layoutPresets.splice(index, 1);
+  persistLayoutPresets();
+  renderLayoutPool();
+  if (!layoutPresets.length) {
+    layoutCurrentResult = '';
+    LS.set('layoutCurrentResult', layoutCurrentResult);
+    renderLayoutResult('');
   }
 }
 
-function nightTick() {
-  if (nightState.remaining <= 0) return;
-  nightState.remaining--;
-  updateNightDisplay();
-
-  if (nightState.remaining === 0) {
-    playNightEnd();
-    nightState.phase++;
-    if (nightState.phase < nightPhases.length) {
-      nightState.remaining = nightPhases[nightState.phase].secs;
-      renderPhaseList();
-      updateNightDisplay();
-    } else {
-      nightStop();
-      renderPhaseList();
-      updateNightDisplay();
-      document.getElementById('night-start-btn').textContent = '完成';
-    }
+function doLayoutDraw() {
+  getAudioCtx();
+  if (!layoutPresets.length) {
+    alert('沒有可抽的版型，請先新增。');
+    return;
   }
+
+  const picked = layoutPresets[Math.floor(Math.random() * layoutPresets.length)];
+  layoutCurrentResult = picked;
+  LS.set('layoutCurrentResult', layoutCurrentResult);
+  renderLayoutResult(picked);
+
+  beep(523, 0.15);
+  setTimeout(() => beep(659, 0.15), 180);
+  setTimeout(() => beep(880, 0.25), 360);
+
+  const rec = createHistoryRecord({ name: picked });
+  layoutHistory.unshift(rec);
+  if (layoutHistory.length > 10) layoutHistory.pop();
+  LS.set('layoutHistory', layoutHistory);
+  renderLayoutHistory();
 }
 
-function nightToggle() {
-  if (nightState.phase >= nightPhases.length) { nightReset(); return; }
-  if (nightState.running) {
-    nightStop();
-  } else {
-    getAudioCtx();
-    nightState.running = true;
-    nightState.interval = setInterval(nightTick, 1000);
-    document.getElementById('night-start-btn').textContent = '暫停';
-    renderPhaseList();
+function renderLayoutHistory() {
+  const el = document.getElementById('layout-history');
+  if (!el) return;
+  if (!layoutHistory.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>';
+    return;
   }
-}
-
-function nightStop() {
-  nightState.running = false;
-  clearInterval(nightState.interval);
-  if (document.getElementById('night-start-btn')) {
-    document.getElementById('night-start-btn').textContent = nightState.phase >= nightPhases.length ? '完成' : '開始';
-  }
+  el.innerHTML = layoutHistory.map((r) => `<div class="history-item"><span>${r.name}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
 // ===== CARDS =====
 const roles = [
   { id: 'magician', name: '魔術師', emoji: '🎩', cls: 'magician' },
-  { id: 'dreamcatcher', name: '攝夢人', emoji: '🌀', cls: 'dreamcatcher' },
+  { id: 'dreamcatcher', name: '攝夢人', emoji: '<svg viewBox="0 0 64 64" class="blue-goblet-icon" aria-label="藍色酒杯" role="img"><path fill="#9fd7ff" d="M18 8h28c0 13.6-5.1 22-14 24.6V42h10v6H22v-6h10v-9.4C23.1 30 18 21.6 18 8Z"/><path fill="#4ca6ff" d="M23 12h18c-.8 8.7-4.4 14-9 16-4.6-2-8.2-7.3-9-16Z"/><rect x="25" y="48" width="14" height="8" rx="3" fill="#7ec3ff"/></svg>', cls: 'dreamcatcher' },
   { id: 'witch', name: '女巫', emoji: '🧙‍♀️', cls: 'witch' },
   { id: 'bear', name: '熊', emoji: '🐻', cls: 'bear' },
   { id: 'hunter', name: '獵人', emoji: '🏹', cls: 'hunter' },
@@ -1553,7 +1807,7 @@ function doCardDraw() {
   setTimeout(() => beep(1047, 0.3), 600);
 
   const names = picked.map(r => r.name).join('、');
-  const rec = { names, time: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit',minute:'2-digit'}) };
+  const rec = createHistoryRecord({ names });
   cardsHistory.unshift(rec);
   if (cardsHistory.length > 10) cardsHistory.pop();
   LS.set('cardsHistory', cardsHistory);
@@ -1563,7 +1817,7 @@ function doCardDraw() {
 function renderCardsHistory() {
   const el = document.getElementById('cards-history');
   if (!cardsHistory.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
-  el.innerHTML = cardsHistory.map(r => `<div class="history-item"><span>${r.names}</span><span>${r.time}</span></div>`).join('');
+  el.innerHTML = cardsHistory.map(r => `<div class="history-item"><span>${r.names}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
 // ===== SERVICE WORKER =====
