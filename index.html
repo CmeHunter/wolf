@@ -146,7 +146,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-top: 14px;
+    margin-top: 22px;
     padding: 6px 14px;
     border-radius: 999px;
     border: 1px solid rgba(201,168,76,0.35);
@@ -281,7 +281,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 20px;
+    padding: 44px 20px 30px;
   }
 
   .timer-circle-wrap {
@@ -317,7 +317,7 @@
 
   .timer-number {
     font-family: var(--font-num);
-    font-size: 92px;
+    font-size: 112px;
     font-weight: 900;
     letter-spacing: 1px;
     color: var(--text);
@@ -1225,7 +1225,6 @@
       <div class="home-title">
         <span class="moon">🌕</span>
         <h2>狼人殺小幫手</h2>
-        <div class="app-version" id="app-version">v2026.5.19</div>
       </div>
       <div class="menu-grid">
         <div class="menu-card" onclick="goTo('timer-screen')">
@@ -1249,6 +1248,7 @@
           <div class="sub">6選2</div>
         </div>
       </div>
+      <div class="app-version" id="app-version">v2026.5.19</div>
     </div>
   </div>
 
@@ -1269,7 +1269,6 @@
         </svg>
         <div class="timer-inner">
           <div class="timer-number" id="timer-display">90</div>
-          <div class="timer-label">倒數秒數</div>
         </div>
       </div>
 
@@ -1300,15 +1299,6 @@
         <div class="panel-action-row">
           <button class="btn btn-secondary btn-sm" id="initialize-counts-btn" onclick="initializeExtraCounts()">所有號碼重設為1</button>
         </div>
-      </div>
-
-      <div class="extra-time-panel" id="extra-panel">
-        <div class="info-text" id="extra-selected-text"></div>
-        <div class="extra-action-row">
-          <button class="btn btn-green btn-sm" style="flex:1" onclick="applyExtraTime()">確認加時</button>
-          <button class="btn btn-secondary btn-sm" onclick="closeExtraPanel()">取消</button>
-        </div>
-        <div class="info-text" id="extra-remain-text"></div>
       </div>
 
       <div class="divider"></div>
@@ -1437,10 +1427,6 @@
       <input class="form-input" type="number" id="set-second-warning" min="1" max="299" value="5">
     </div>
     <div class="form-row">
-      <div class="form-label">加時秒數</div>
-      <input class="form-input" type="number" id="set-extra-secs" min="1" max="300" value="60">
-    </div>
-    <div class="form-row">
       <div class="form-label">增減秒數</div>
       <input class="form-input" type="number" id="set-adjust-secs" min="1" max="300" value="5">
     </div>
@@ -1520,7 +1506,6 @@ function syncTimerSettingsInputs() {
   document.getElementById('set-seconds').value = timerSettings.seconds;
   document.getElementById('set-first-warning').value = timerSettings.firstWarning;
   document.getElementById('set-second-warning').value = timerSettings.secondWarning;
-  document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
   document.getElementById('set-adjust-secs').value = timerSettings.adjustSecs;
   document.getElementById('set-preset-30-secs').value = timerSettings.preset30Secs;
   document.getElementById('set-preset-60-secs').value = timerSettings.preset60Secs;
@@ -1546,13 +1531,26 @@ const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
 function getAudioCtx() {
-  if (!audioCtx) audioCtx = new AudioCtx();
+  if (!AudioCtx) return null;
+  if (!audioCtx || audioCtx.state === 'closed') audioCtx = new AudioCtx();
+  if ((audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') && typeof audioCtx.resume === 'function') {
+    audioCtx.resume().catch(() => {});
+  }
   return audioCtx;
+}
+
+function wakeAudioCtx() {
+  const ctx = getAudioCtx();
+  if (!ctx || typeof ctx.resume !== 'function') return;
+  if (ctx.state === 'suspended' || ctx.state === 'interrupted') {
+    ctx.resume().catch(() => {});
+  }
 }
 
 function beep(freq, dur, type='sine', vol=0.3) {
   try {
     const ctx = getAudioCtx();
+    if (!ctx) return;
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.connect(g); g.connect(ctx.destination);
@@ -1587,8 +1585,30 @@ function playNightEnd() {
   setTimeout(() => beep(660, 0.3, 'triangle', 0.3), 360);
 }
 
+function playDrawChime() {
+  beep(660, 0.1);
+  setTimeout(() => beep(784, 0.1), 120);
+  setTimeout(() => beep(1047, 0.2), 240);
+}
+
+function playLayoutChime() {
+  beep(523, 0.15);
+  setTimeout(() => beep(659, 0.15), 180);
+  setTimeout(() => beep(880, 0.25), 360);
+}
+
+window.addEventListener('pointerdown', wakeAudioCtx, { passive: true });
+window.addEventListener('keydown', wakeAudioCtx);
+window.addEventListener('pageshow', wakeAudioCtx);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) wakeAudioCtx();
+});
+
 // ===== TIMER =====
-let timerSettings = normalizeTimerSettings(LS.get('timerSettings', null));
+let timerSettings = normalizeTimerSettings({
+  ...(LS.get('timerSettings', null) || {}),
+  extraSecs: 60
+});
 LS.set('timerSettings', timerSettings);
 
 function normalizeSelectedNum(saved) {
@@ -1676,17 +1696,7 @@ function updateInitializeCountsButton() {
   if (button) button.textContent = '所有號碼重設為1';
 }
 
-function updateSelectedNumberText() {
-  const selected = timerState.selectedNum;
-  const extraSelectedText = document.getElementById('extra-selected-text');
-  const panelTitle = document.getElementById('extra-panel-title');
-
-  if (panelTitle) panelTitle.textContent = `⚡ 加時 ${timerSettings.extraSecs} 秒`;
-
-  if (extraSelectedText) {
-    extraSelectedText.textContent = selected ? `本次加時對象：${selected} 號` : '請先在上方選擇號碼';
-  }
-}
+function updateSelectedNumberText() {}
 
 function setAdjustMode(mode) {
   timerState.adjustMode = mode === 'increase' ? 'increase' : 'decrease';
@@ -1766,11 +1776,10 @@ function timerTick() {
     timerState.alertBase
   );
   if (alertStage === 'first-warning') playWarning();
-  if (alertStage === 'second-warning') playUrgentWarning();
+  if (alertStage === 'second-warning') playWarning();
   if (alertStage === 'end') {
     playEnd();
     timerStop();
-    openExtraPanel();
   }
 }
 
@@ -1778,6 +1787,7 @@ function timerStart() {
   if (timerState.running) return;
   if (timerState.remaining <= 0) timerReset();
   getAudioCtx();
+  playDrawChime();
   timerState.running = true;
   clearInterval(timerState.interval);
   timerState.interval = setInterval(timerTick, 1000);
@@ -1786,6 +1796,7 @@ function timerStart() {
 
 function timerPause() {
   if (!timerState.running) return;
+  playLayoutChime();
   timerStop();
 }
 
@@ -1859,23 +1870,11 @@ function timerReset() {
   updateTimerControls();
 }
 
-function openExtraPanel() {
-  const panel = document.getElementById('extra-panel');
-  panel.classList.add('visible');
-  updateExtraRemainText();
-  updateSelectedNumberText();
-}
-
 function closeExtraPanel() {
-  document.getElementById('extra-panel').classList.remove('visible');
+  document.getElementById('extra-panel')?.classList.remove('visible');
 }
 
-function updateExtraRemainText() {
-  const selected = timerState.selectedNum;
-  document.getElementById('extra-remain-text').textContent = selected
-    ? `${selected} 號剩餘加時次數：${timerState.extraCounts[selected]} 次`
-    : '請先在上方選擇號碼';
-}
+function updateExtraRemainText() {}
 
 function applyExtraTime() {
   if (!timerState.selectedNum) { alert('請先在上方選擇使用加時的號碼'); return; }
@@ -1928,7 +1927,7 @@ function saveTimerSettings() {
     seconds: document.getElementById('set-seconds').value,
     firstWarning: document.getElementById('set-first-warning').value,
     secondWarning: document.getElementById('set-second-warning').value,
-    extraSecs: document.getElementById('set-extra-secs').value,
+    extraSecs: 60,
     adjustSecs: document.getElementById('set-adjust-secs').value,
     preset30Secs: document.getElementById('set-preset-30-secs').value,
     preset60Secs: document.getElementById('set-preset-60-secs').value,
@@ -2020,9 +2019,7 @@ function doDraw() {
   LS.set('drawCurrentResult', drawCurrentResult);
   renderDrawResult(drawCurrentResult);
 
-  beep(660, 0.1);
-  setTimeout(() => beep(784, 0.1), 120);
-  setTimeout(() => beep(1047, 0.2), 240);
+  playDrawChime();
 
   const rec = createHistoryRecord({ num, order: orderLabel });
   drawHistory.unshift(rec);
@@ -2142,9 +2139,7 @@ function doLayoutDraw() {
   LS.set('layoutCurrentResult', layoutCurrentResult);
   renderLayoutResult(picked);
 
-  beep(523, 0.15);
-  setTimeout(() => beep(659, 0.15), 180);
-  setTimeout(() => beep(880, 0.25), 360);
+  playLayoutChime();
 
   const rec = createHistoryRecord({ name: picked });
   layoutHistory.unshift(rec);

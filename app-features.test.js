@@ -224,7 +224,6 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(html, /id="set-seconds"[^>]*min="1"[^>]*value="90"/);
   assert.match(html, /id="set-first-warning"[^>]*value="15"/);
   assert.match(html, /id="set-second-warning"[^>]*value="5"/);
-  assert.match(html, /id="set-extra-secs"[^>]*min="1"[^>]*value="60"/);
   assert.match(html, /id="set-adjust-secs"[^>]*min="1"[^>]*value="5"/);
   assert.match(html, /id="set-preset-30-secs"[^>]*min="1"[^>]*value="30"/);
   assert.match(html, /id="set-preset-60-secs"[^>]*min="1"[^>]*value="60"/);
@@ -234,6 +233,11 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(html, /id="clear-draw-history-btn"/);
   assert.match(html, /id="clear-layout-history-btn"/);
   assert.match(html, /id="clear-cards-history-btn"/);
+  assert.ok(!html.includes('id="extra-panel"'));
+  assert.ok(!html.includes('extra-selected-text'));
+  assert.ok(!html.includes('extra-remain-text'));
+  assert.ok(!html.includes('本次加時對象'));
+  assert.ok(!html.includes('確認加時'));
   assert.ok(!html.includes('id="selected-number-text"'));
   assert.ok(!html.includes('初始化次數為'));
   assert.ok(!html.includes('id="set-warning"'));
@@ -251,6 +255,9 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.ok(!html.includes('set-reset-b-secs'));
   assert.ok(!html.includes('set-initial-count'));
   assert.ok(!html.includes('初始化次數'));
+  assert.ok(!html.includes('id="set-extra-secs"'));
+  assert.ok(!html.includes('加時秒數'));
+  assert.ok(!html.includes("getElementById('set-extra-secs')"));
   assert.match(html, /id="draw-result-card"[\s\S]*請按下方按鈕/);
   assert.match(html, /id="layout-result-card"[\s\S]*請按下方按鈕/);
   assert.ok(!html.includes('按下抽籤開始'));
@@ -263,12 +270,14 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(sw, /fonts\.googleapis\.com\/css2\?family=Noto\+Sans\+TC:wght@400;500;700;900&family=Lexend:wght@400;600;700;800;900&display=swap/);
   assert.ok(!html.includes('Noto Serif TC'));
   assert.ok(!html.includes('Cinzel'));
+  assert.ok(!html.includes('class="timer-label"'));
   assert.match(html, /\.layout-add-row\s*\{[^}]*flex-wrap:\s*wrap/s);
   assert.match(html, /body\s*\{[^}]*font-family:\s*var\(--font-ui\);[^}]*font-size:\s*20px/s);
   assert.match(html, /\.home-title h2\s*\{[^}]*font-size:\s*40px/s);
   assert.match(html, /\.menu-card \.label\s*\{[^}]*font-size:\s*20px/s);
   assert.match(html, /\.screen-title\s*\{[^}]*font-size:\s*22px/s);
-  assert.match(html, /\.timer-number\s*\{[^}]*font-family:\s*var\(--font-num\);[^}]*font-size:\s*92px/s);
+  assert.match(html, /\.timer-content\s*\{[^}]*padding:\s*44px 20px 30px/s);
+  assert.match(html, /\.timer-number\s*\{[^}]*font-family:\s*var\(--font-num\);[^}]*font-size:\s*112px/s);
   assert.match(html, /\.btn\s*\{[^}]*font-size:\s*20px/s);
   assert.match(html, /\.btn-sm\s*\{[^}]*font-size:\s*18px/s);
   assert.match(html, /\.form-label\s*\{[^}]*font-size:\s*17px/s);
@@ -315,7 +324,8 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(html, /function adjustTimerRemaining\(secondsToAdd\)\s*\{[\s\S]*Math\.max\(1, timerState\.remaining \+ secondsToAdd\)[\s\S]*updateTimerDisplay\(\)/);
   assert.match(html, /function applyQuickIncreaseTime\(\)\s*\{[\s\S]*adjustTimerRemaining\(timerSettings\.adjustSecs\)[\s\S]*\}/);
   assert.match(html, /function applyQuickDecreaseTime\(\)\s*\{[\s\S]*adjustTimerRemaining\(-timerSettings\.adjustSecs\)[\s\S]*\}/);
-  assert.match(html, /function saveTimerSettings\(\)\s*\{[\s\S]*adjustSecs:\s*document\.getElementById\('set-adjust-secs'\)\.value[\s\S]*preset30Secs:\s*document\.getElementById\('set-preset-30-secs'\)\.value[\s\S]*preset60Secs:\s*document\.getElementById\('set-preset-60-secs'\)\.value[\s\S]*preset90Secs:\s*document\.getElementById\('set-preset-90-secs'\)\.value[\s\S]*preset120Secs:\s*document\.getElementById\('set-preset-120-secs'\)\.value[\s\S]*\}/);
+  assert.match(html, /let timerSettings = normalizeTimerSettings\(\{[\s\S]*extraSecs:\s*60[\s\S]*\}\);/);
+  assert.match(html, /function saveTimerSettings\(\)\s*\{[\s\S]*extraSecs:\s*60[\s\S]*adjustSecs:\s*document\.getElementById\('set-adjust-secs'\)\.value[\s\S]*preset30Secs:\s*document\.getElementById\('set-preset-30-secs'\)\.value[\s\S]*preset60Secs:\s*document\.getElementById\('set-preset-60-secs'\)\.value[\s\S]*preset90Secs:\s*document\.getElementById\('set-preset-90-secs'\)\.value[\s\S]*preset120Secs:\s*document\.getElementById\('set-preset-120-secs'\)\.value[\s\S]*\}/);
   assert.match(html, /function initializeExtraCounts\(\)\s*\{[\s\S]*window\.confirm\([\s\S]*所有號碼重設為1[\s\S]*createDefaultExtraCounts\(\)[\s\S]*\}/);
   assert.match(html, /const isWarning = s <= timerSettings\.firstWarning && s > 0;/);
   assert.ok(!html.includes('font-size:12px;color:var(--text2);padding:8px">尚無紀錄'));
@@ -389,6 +399,195 @@ test('timer button helper functions update DOM from current settings', () => {
   assert.equal(elements['timer-preset-120'].textContent, '重設115秒');
 });
 
+test('timer tick reuses the first warning sound for the second warning and does not open extra controls at end', () => {
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  let warningCalls = 0;
+  let urgentCalls = 0;
+  let endCalls = 0;
+  let stopCalls = 0;
+  let openPanelCalls = 0;
+  let displayUpdates = 0;
+
+  const timerState = {
+    remaining: 6,
+    alertBase: 90
+  };
+
+  const { functions, context } = loadHtmlFunctions(
+    html,
+    ['timerTick'],
+    {
+      timerState,
+      timerSettings: {
+        firstWarning: 15,
+        secondWarning: 5
+      },
+      updateTimerDisplay() {
+        displayUpdates++;
+      },
+      getTimerAlertStage() {
+        return 'second-warning';
+      },
+      playWarning() {
+        warningCalls++;
+      },
+      playUrgentWarning() {
+        urgentCalls++;
+      },
+      playEnd() {
+        endCalls++;
+      },
+      timerStop() {
+        stopCalls++;
+      },
+      openExtraPanel() {
+        openPanelCalls++;
+      }
+    }
+  );
+
+  functions.timerTick();
+
+  assert.equal(timerState.remaining, 5);
+  assert.equal(displayUpdates, 1);
+  assert.equal(warningCalls, 1);
+  assert.equal(urgentCalls, 0);
+  assert.equal(endCalls, 0);
+  assert.equal(stopCalls, 0);
+  assert.equal(openPanelCalls, 0);
+
+  timerState.remaining = 1;
+  context.getTimerAlertStage = () => 'end';
+
+  functions.timerTick();
+
+  assert.equal(timerState.remaining, 0);
+  assert.equal(endCalls, 1);
+  assert.equal(stopCalls, 1);
+  assert.equal(openPanelCalls, 0);
+});
+
+test('timer start and pause play draw and layout chimes', () => {
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  let drawChimeCalls = 0;
+  let layoutChimeCalls = 0;
+  let resetCalls = 0;
+  let stopCalls = 0;
+  let updateCalls = 0;
+  let audioCtxCalls = 0;
+  let intervalCalls = 0;
+
+  const timerState = {
+    remaining: 90,
+    running: false,
+    interval: null
+  };
+
+  const { functions } = loadHtmlFunctions(
+    html,
+    ['timerStart', 'timerPause'],
+    {
+      timerState,
+      timerTick() {},
+      getAudioCtx() {
+        audioCtxCalls++;
+      },
+      playDrawChime() {
+        drawChimeCalls++;
+      },
+      playLayoutChime() {
+        layoutChimeCalls++;
+      },
+      timerReset() {
+        resetCalls++;
+        timerState.remaining = 90;
+      },
+      clearInterval() {},
+      setInterval() {
+        intervalCalls++;
+        return 321;
+      },
+      updateTimerControls() {
+        updateCalls++;
+      },
+      timerStop() {
+        stopCalls++;
+        timerState.running = false;
+        timerState.interval = null;
+      }
+    }
+  );
+
+  functions.timerStart();
+
+  assert.equal(audioCtxCalls, 1);
+  assert.equal(drawChimeCalls, 1);
+  assert.equal(layoutChimeCalls, 0);
+  assert.equal(resetCalls, 0);
+  assert.equal(intervalCalls, 1);
+  assert.equal(updateCalls, 1);
+  assert.equal(timerState.running, true);
+  assert.equal(timerState.interval, 321);
+
+  functions.timerPause();
+
+  assert.equal(layoutChimeCalls, 1);
+  assert.equal(stopCalls, 1);
+});
+
+test('audio context helper recreates closed contexts and resumes suspended audio', () => {
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  let resumeCalls = 0;
+  let createdContexts = 0;
+  const suspendedCtx = {
+    state: 'suspended',
+    resume() {
+      resumeCalls++;
+      this.state = 'running';
+      return Promise.resolve();
+    }
+  };
+
+  function MockAudioCtx() {
+    createdContexts++;
+    return {
+      state: 'running',
+      resume() {
+        resumeCalls++;
+        return Promise.resolve();
+      }
+    };
+  }
+
+  const { functions, context } = loadHtmlFunctions(
+    html,
+    ['getAudioCtx'],
+    {
+      AudioCtx: MockAudioCtx,
+      audioCtx: suspendedCtx
+    }
+  );
+
+  const resumedCtx = functions.getAudioCtx();
+  assert.equal(resumedCtx, suspendedCtx);
+  assert.equal(resumeCalls, 1);
+
+  context.audioCtx = {
+    state: 'closed',
+    resume() {
+      resumeCalls++;
+      return Promise.resolve();
+    }
+  };
+
+  const recreatedCtx = functions.getAudioCtx();
+  assert.equal(createdContexts, 1);
+  assert.notEqual(recreatedCtx.state, 'closed');
+});
+
 test('home branding, timer count controls, and footer copy reflect the updated UI copy', () => {
   const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
@@ -402,14 +601,19 @@ test('home branding, timer count controls, and footer copy reflect the updated U
   const minusButtonIndex = html.indexOf('id="count-mode-minus"');
   const plusButtonIndex = html.indexOf('id="count-mode-plus"');
   const initializeButtonIndex = html.indexOf('id="initialize-counts-btn"');
+  const menuGridIndex = html.indexOf('class="menu-grid"');
+  const appVersionIndex = html.indexOf('id="app-version"');
 
   assert.ok(speakerGridIndex !== -1);
   assert.ok(minusButtonIndex !== -1);
   assert.ok(plusButtonIndex !== -1);
   assert.ok(initializeButtonIndex !== -1);
+  assert.ok(menuGridIndex !== -1);
+  assert.ok(appVersionIndex !== -1);
   assert.ok(speakerGridIndex < minusButtonIndex);
   assert.ok(speakerGridIndex < plusButtonIndex);
   assert.ok(speakerGridIndex < initializeButtonIndex);
+  assert.ok(menuGridIndex < appVersionIndex);
 
   assert.ok(!html.includes('Made by Hunter'));
 });
