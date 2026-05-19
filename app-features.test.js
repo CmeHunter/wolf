@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-test('timer utils support initial count defaults and legacy migration', () => {
+test('timer utils support dual warning thresholds and legacy migration', () => {
   let timerUtils;
 
   try {
@@ -21,13 +21,32 @@ test('timer utils support initial count defaults and legacy migration', () => {
 
   assert.deepEqual(settings, {
     seconds: 90,
-    warning: 15,
+    firstWarning: 15,
+    secondWarning: 5,
     extraSecs: 60,
     initialCount: 3
   });
 
+  assert.deepEqual(timerUtils.normalizeTimerSettings({ warning: 27 }), {
+    seconds: 90,
+    firstWarning: 27,
+    secondWarning: 5,
+    extraSecs: 60,
+    initialCount: 1
+  });
+
+  assert.deepEqual(timerUtils.normalizeTimerSettings({
+    firstWarning: 8,
+    secondWarning: 12
+  }), {
+    seconds: 90,
+    firstWarning: 8,
+    secondWarning: 7,
+    extraSecs: 60,
+    initialCount: 1
+  });
+
   assert.equal(timerUtils.normalizeTimerSettings({}).initialCount, 1);
-  assert.equal(timerUtils.normalizeTimerSettings({ warning: 27 }).warning, 15);
   assert.deepEqual(timerUtils.createDefaultExtraCounts(2), {
     1: 2,
     2: 2,
@@ -42,9 +61,9 @@ test('timer utils support initial count defaults and legacy migration', () => {
     11: 2,
     12: 2
   });
-});
+}); 
 
-test('timer utils expose two-stage countdown alerts', () => {
+test('timer utils expose configurable first and second countdown alerts', () => {
   let timerUtils;
 
   try {
@@ -53,13 +72,13 @@ test('timer utils expose two-stage countdown alerts', () => {
     assert.fail(`timer utils are not implemented yet: ${error.message}`);
   }
 
-  assert.equal(timerUtils.getTimerAlertStage(16, 15), 'none');
-  assert.equal(timerUtils.getTimerAlertStage(15, 15), 'warning');
-  assert.equal(timerUtils.getTimerAlertStage(14, 15), 'none');
-  assert.equal(timerUtils.getTimerAlertStage(3, 15), 'urgent');
-  assert.equal(timerUtils.getTimerAlertStage(2, 15), 'urgent');
-  assert.equal(timerUtils.getTimerAlertStage(1, 15), 'urgent');
-  assert.equal(timerUtils.getTimerAlertStage(0, 15), 'end');
+  assert.equal(timerUtils.getTimerAlertStage(16, 15, 5), 'none');
+  assert.equal(timerUtils.getTimerAlertStage(15, 15, 5), 'first-warning');
+  assert.equal(timerUtils.getTimerAlertStage(14, 15, 5), 'none');
+  assert.equal(timerUtils.getTimerAlertStage(5, 15, 5), 'second-warning');
+  assert.equal(timerUtils.getTimerAlertStage(2, 15, 5), 'second-warning');
+  assert.equal(timerUtils.getTimerAlertStage(1, 15, 5), 'second-warning');
+  assert.equal(timerUtils.getTimerAlertStage(0, 15, 5), 'end');
 });
 
 test('index HTML contains updated controls, labels, icon, and layout guardrails', () => {

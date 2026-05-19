@@ -11,12 +11,11 @@
 })(typeof window !== 'undefined' ? window : globalThis, function() {
   const DEFAULT_TIMER_SETTINGS = {
     seconds: 90,
-    warning: 15,
+    firstWarning: 15,
+    secondWarning: 5,
     extraSecs: 60,
     initialCount: 1
   };
-
-  const URGENT_WARNING_SECONDS = 3;
 
   function toIntInRange(value, fallback, min, max) {
     const parsed = parseInt(value, 10);
@@ -24,12 +23,29 @@
     return Math.min(max, Math.max(min, parsed));
   }
 
+  function normalizeWarningThresholds(source) {
+    const firstWarning = toIntInRange(
+      source.firstWarning ?? source.warning,
+      DEFAULT_TIMER_SETTINGS.firstWarning,
+      2,
+      300
+    );
+    const secondWarning = Math.min(
+      toIntInRange(source.secondWarning, DEFAULT_TIMER_SETTINGS.secondWarning, 1, 299),
+      firstWarning - 1
+    );
+
+    return { firstWarning, secondWarning };
+  }
+
   function normalizeTimerSettings(saved) {
     const source = saved && typeof saved === 'object' ? saved : {};
+    const { firstWarning, secondWarning } = normalizeWarningThresholds(source);
 
     return {
       seconds: toIntInRange(source.seconds, DEFAULT_TIMER_SETTINGS.seconds, 10, 300),
-      warning: DEFAULT_TIMER_SETTINGS.warning,
+      firstWarning,
+      secondWarning,
       extraSecs: toIntInRange(source.extraSecs, DEFAULT_TIMER_SETTINGS.extraSecs, 10, 300),
       initialCount: toIntInRange(
         source.initialCount ?? source.extraCount,
@@ -63,23 +79,29 @@
     return counts;
   }
 
-  function getTimerAlertStage(remaining, warningThreshold = DEFAULT_TIMER_SETTINGS.warning, urgentThreshold = URGENT_WARNING_SECONDS) {
+  function getTimerAlertStage(
+    remaining,
+    firstWarningThreshold = DEFAULT_TIMER_SETTINGS.firstWarning,
+    secondWarningThreshold = DEFAULT_TIMER_SETTINGS.secondWarning
+  ) {
     const remainingSeconds = parseInt(remaining, 10);
     if (!Number.isFinite(remainingSeconds) || remainingSeconds < 0) return 'none';
     if (remainingSeconds === 0) return 'end';
 
-    const urgentSeconds = toIntInRange(urgentThreshold, URGENT_WARNING_SECONDS, 1, 10);
-    if (remainingSeconds <= urgentSeconds) return 'urgent';
+    const firstWarning = toIntInRange(firstWarningThreshold, DEFAULT_TIMER_SETTINGS.firstWarning, 2, 300);
+    const secondWarning = Math.min(
+      toIntInRange(secondWarningThreshold, DEFAULT_TIMER_SETTINGS.secondWarning, 1, 299),
+      firstWarning - 1
+    );
 
-    const warningSeconds = toIntInRange(warningThreshold, DEFAULT_TIMER_SETTINGS.warning, 0, 300);
-    if (warningSeconds > urgentSeconds && remainingSeconds === warningSeconds) return 'warning';
+    if (remainingSeconds === firstWarning) return 'first-warning';
+    if (remainingSeconds <= secondWarning) return 'second-warning';
 
     return 'none';
   }
 
   return {
     DEFAULT_TIMER_SETTINGS,
-    URGENT_WARNING_SECONDS,
     createDefaultExtraCounts,
     getTimerAlertStage,
     normalizeExtraCounts,
