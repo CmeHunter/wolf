@@ -1,4 +1,4 @@
-const CACHE_NAME = 'werewolf-tools-v2026.5.19.8';
+const CACHE_NAME = 'werewolf-tools-v2026.5.19';
 const ASSETS = [
   './index.html',
   './history-formatters.js',

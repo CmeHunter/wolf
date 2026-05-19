@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="狼人殺小幫手">
-<title>狼人殺小幫手 v2026.5.19.8</title>
+<title>狼人殺小幫手 v2026.5.19</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
@@ -1225,7 +1225,7 @@
       <div class="home-title">
         <span class="moon">🌕</span>
         <h2>狼人殺小幫手</h2>
-        <div class="app-version" id="app-version">v2026.5.19.8</div>
+        <div class="app-version" id="app-version">v2026.5.19</div>
       </div>
       <div class="menu-grid">
         <div class="menu-card" onclick="goTo('timer-screen')">
@@ -1250,7 +1250,6 @@
         </div>
       </div>
     </div>
-    <div class="screen-footer">Made by Hunter</div>
   </div>
 
   <!-- ============ TIMER SCREEN ============ -->
@@ -1321,7 +1320,6 @@
         <div class="history-list" id="extra-history"></div>
       </div>
     </div>
-    <div class="screen-footer">Made by Hunter</div>
   </div>
 
   <!-- ============ DRAW SCREEN ============ -->
@@ -1355,7 +1353,6 @@
         <div class="history-list" id="draw-history"></div>
       </div>
     </div>
-    <div class="screen-footer">Made by Hunter</div>
   </div>
 
   <!-- ============ NIGHT SCREEN ============ -->
@@ -1367,7 +1364,7 @@
     <div class="layout-content">
       <div class="result-card" id="layout-result-card">
         <img class="result-card-icon" src="pic/抽版型.jpg" alt="">
-        <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
+        <div class="result-sub" id="layout-result-name">請按下方按鈕</div>
       </div>
 
       <button class="btn btn-purple full-btn" id="layout-draw-btn" onclick="doLayoutDraw()" style="margin-bottom:20px">✨ 抽出版型</button>
@@ -1390,7 +1387,6 @@
         <div class="history-list" id="layout-history"></div>
       </div>
     </div>
-    <div class="screen-footer">Made by Hunter</div>
   </div>
 
   <!-- ============ CARDS SCREEN ============ -->
@@ -1417,7 +1413,6 @@
         <div class="history-list" id="cards-history"></div>
       </div>
     </div>
-    <div class="screen-footer">Made by Hunter</div>
   </div>
 
 </div>
@@ -1492,7 +1487,7 @@ const LS = {
   set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-const APP_VERSION = 'v2026.5.19.8';
+const APP_VERSION = 'v2026.5.19';
 
 const { createHistoryRecord, formatHistoryTimestamp } = window.HistoryFormatters;
 const {
@@ -2082,7 +2077,7 @@ function renderLayoutResult(name = '') {
   if (!name) {
     el.innerHTML = `
       <img class="result-card-icon" src="pic/抽版型.jpg" alt="">
-      <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
+      <div class="result-sub" id="layout-result-name">請按下方按鈕</div>
     `;
     return;
   }

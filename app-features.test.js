@@ -188,9 +188,11 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
   const manifest = fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8');
 
-  assert.match(html, /v2026\.5\.19\.8/);
-  assert.match(sw, /werewolf-tools-v2026\.5\.19\.8/);
-  assert.match(html, /id="app-version">v2026\.5\.19\.8</);
+  assert.match(html, /v2026\.5\.19/);
+  assert.doesNotMatch(html, /v2026\.5\.19\.8/);
+  assert.match(sw, /werewolf-tools-v2026\.5\.19/);
+  assert.doesNotMatch(sw, /werewolf-tools-v2026\.5\.19\.8/);
+  assert.match(html, /id="app-version">v2026\.5\.19</);
   assert.match(html, /id="timer-pause-btn"/);
   assert.match(html, /id="timer-quick-add-btn"/);
   assert.match(html, /id="timer-quick-restore-btn"/);
@@ -250,6 +252,8 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.ok(!html.includes('set-initial-count'));
   assert.ok(!html.includes('初始化次數'));
   assert.match(html, /id="draw-result-card"[\s\S]*請按下方按鈕/);
+  assert.match(html, /id="layout-result-card"[\s\S]*請按下方按鈕/);
+  assert.ok(!html.includes('按下抽籤開始'));
   assert.match(html, /輸入新版型名稱/);
   assert.ok(!html.includes('輸入新版本型名稱'));
   assert.ok(!html.includes('版型抽籤'));
@@ -385,7 +389,7 @@ test('timer button helper functions update DOM from current settings', () => {
   assert.equal(elements['timer-preset-120'].textContent, '重設115秒');
 });
 
-test('home branding, timer count controls, and footer credits reflect the updated UI copy', () => {
+test('home branding, timer count controls, and footer copy reflect the updated UI copy', () => {
   const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
   assert.match(html, /<title>狼人殺小幫手 v/);
@@ -407,8 +411,7 @@ test('home branding, timer count controls, and footer credits reflect the update
   assert.ok(speakerGridIndex < plusButtonIndex);
   assert.ok(speakerGridIndex < initializeButtonIndex);
 
-  const creditMatches = html.match(/Made by Hunter/g) || [];
-  assert.equal(creditMatches.length, 5);
+  assert.ok(!html.includes('Made by Hunter'));
 });
 
 test('clear history handlers also reset the current draw, layout, and card results', () => {
