@@ -7,12 +7,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="狼人殺工具">
-<title>狼人殺工具箱 v2026.5.19.3</title>
+<title>狼人殺工具箱 v2026.5.19.5</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Lexend:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a14;
@@ -32,6 +33,8 @@
     --accent2: #9b5fb0;
     --green: #27ae60;
     --green2: #2ecc71;
+    --font-ui: 'Noto Sans TC', sans-serif;
+    --font-num: 'Lexend', 'Noto Sans TC', sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -39,8 +42,8 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Noto Serif TC', serif;
-    font-size: 18px;
+    font-family: var(--font-ui);
+    font-size: 20px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -113,17 +116,20 @@
   }
 
   .home-title h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
-    letter-spacing: 6px;
+    font-family: var(--font-ui);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 4px;
     color: var(--gold);
     text-transform: uppercase;
     margin-bottom: 6px;
   }
 
   .home-title h2 {
-    font-size: 34px;
+    font-size: 40px;
     font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.2;
     color: var(--text);
     text-shadow: 0 0 30px rgba(201,168,76,0.3);
   }
@@ -138,8 +144,8 @@
     border: 1px solid rgba(201,168,76,0.35);
     background: rgba(201,168,76,0.08);
     color: var(--gold2);
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
+    font-family: var(--font-num);
+    font-size: 18px;
     letter-spacing: 1px;
   }
 
@@ -185,8 +191,8 @@
     border: 1px solid rgba(255,255,255,0.18);
     box-shadow: 0 8px 24px rgba(0,0,0,0.28);
   }
-  .menu-card .label { font-size: 18px; font-weight: 700; color: var(--text); }
-  .menu-card .sub { font-size: 14px; color: var(--text2); margin-top: 6px; }
+  .menu-card .label { font-size: 20px; font-weight: 700; color: var(--text); }
+  .menu-card .sub { font-size: 16px; color: var(--text2); margin-top: 6px; }
 
   .menu-card:nth-child(1) { --card-glow: radial-gradient(circle, rgba(201,168,76,0.15), transparent); border-color: rgba(201,168,76,0.2); }
   .menu-card:nth-child(2) { --card-glow: radial-gradient(circle, rgba(41,128,185,0.15), transparent); border-color: rgba(41,128,185,0.2); }
@@ -212,8 +218,8 @@
     color: var(--text2);
     padding: 8px 14px;
     border-radius: 20px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
+    font-family: var(--font-ui);
+    font-size: 17px;
     cursor: pointer;
     transition: all 0.2s;
     margin-right: 16px;
@@ -222,7 +228,7 @@
   .back-btn:active { background: var(--border); }
 
   .screen-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--gold);
     flex: 1;
@@ -247,7 +253,7 @@
     color: var(--text2);
     padding: 8px 12px;
     border-radius: 20px;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.2s;
   }
@@ -293,9 +299,10 @@
   }
 
   .timer-number {
-    font-family: 'Cinzel', serif;
-    font-size: 80px;
+    font-family: var(--font-num);
+    font-size: 92px;
     font-weight: 900;
+    letter-spacing: 1px;
     color: var(--text);
     line-height: 1;
     transition: color 0.3s;
@@ -304,9 +311,10 @@
   .timer-number.warning { color: var(--red2); text-shadow: 0 0 20px rgba(231,76,60,0.5); }
 
   .timer-label {
-    font-size: 16px;
+    font-size: 18px;
     color: var(--text2);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    font-weight: 700;
     margin-top: 6px;
   }
 
@@ -321,6 +329,19 @@
 
   .timer-btn-wide {
     flex: 1 1 160px;
+  }
+
+  .timer-quick-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 388px;
+    margin-bottom: 14px;
+  }
+
+  .timer-quick-row > * {
+    flex: 1 1 140px;
   }
 
   .timer-preset-row {
@@ -346,9 +367,9 @@
     padding: 16px 30px;
     border-radius: 50px;
     border: none;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 18px;
-    font-weight: 700;
+    font-family: var(--font-ui);
+    font-size: 20px;
+    font-weight: 800;
     cursor: pointer;
     transition: all 0.2s;
     letter-spacing: 1px;
@@ -368,7 +389,7 @@
   .btn-blue { background: var(--blue); color: #fff; }
   .btn-green { background: var(--green); color: #fff; }
   .btn-purple { background: var(--accent); color: #fff; }
-  .btn-sm { padding: 12px 18px; font-size: 16px; }
+  .btn-sm { padding: 13px 20px; font-size: 18px; }
 
   /* Extra time panel */
   .extra-time-panel {
@@ -384,9 +405,9 @@
   .extra-time-panel.visible { display: block; }
 
   .panel-title {
-    font-size: 17px;
+    font-size: 20px;
     color: var(--gold);
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 14px;
     letter-spacing: 1px;
   }
@@ -404,8 +425,8 @@
     color: var(--text);
     border-radius: 8px;
     padding: 10px 0;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 18px;
+    font-family: var(--font-num);
+    font-size: 20px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -436,7 +457,8 @@
   }
 
   .panel-action-row {
-    margin-top: 12px;
+    margin-top: 16px;
+    margin-bottom: 18px;
   }
 
   .speaker-panel {
@@ -462,8 +484,8 @@
     color: var(--text2);
     border-radius: 10px;
     padding: 10px 12px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
+    font-family: var(--font-ui);
+    font-size: 17px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -506,8 +528,8 @@
   }
 
   .speaker-card-number {
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 19px;
+    font-weight: 800;
     color: var(--text);
   }
 
@@ -516,12 +538,12 @@
     align-items: center;
     justify-content: space-between;
     color: var(--text2);
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .speaker-count {
-    font-family: 'Cinzel', serif;
-    font-size: 28px;
+    font-family: var(--font-num);
+    font-size: 32px;
     color: var(--gold);
     line-height: 1;
   }
@@ -563,8 +585,8 @@
   }
 
   .modal-title {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 800;
     color: var(--gold);
     margin-bottom: 20px;
     text-align: center;
@@ -578,7 +600,8 @@
   }
 
   .form-label {
-    font-size: 15px;
+    font-size: 17px;
+    font-weight: 600;
     color: var(--text2);
     flex: 1;
   }
@@ -589,9 +612,9 @@
     color: var(--text);
     padding: 10px 14px;
     border-radius: 10px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 18px;
-    width: 110px;
+    font-family: var(--font-num);
+    font-size: 20px;
+    width: 120px;
     text-align: center;
     -webkit-appearance: none;
   }
@@ -646,8 +669,8 @@
   }
 
   .result-big {
-    font-family: 'Cinzel', serif;
-    font-size: 80px;
+    font-family: var(--font-num);
+    font-size: 92px;
     font-weight: 900;
     color: var(--gold);
     text-shadow: 0 0 40px rgba(201,168,76,0.4);
@@ -655,7 +678,7 @@
   }
 
   .result-sub {
-    font-size: 22px;
+    font-size: 24px;
     color: var(--text2);
     margin-top: 8px;
   }
@@ -667,7 +690,8 @@
     color: var(--gold);
     padding: 6px 16px;
     border-radius: 20px;
-    font-size: 16px;
+    font-size: 17px;
+    font-weight: 700;
     margin-top: 10px;
   }
 
@@ -688,8 +712,8 @@
     background: var(--bg3);
     border: none;
     color: var(--text2);
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
+    font-family: var(--font-ui);
+    font-size: 17px;
     cursor: pointer;
     transition: all 0.2s;
   }
@@ -705,7 +729,7 @@
   }
 
   .layout-result-name {
-    font-size: 38px;
+    font-size: 42px;
     font-weight: 900;
     color: var(--gold);
     line-height: 1.35;
@@ -761,7 +785,7 @@
   }
 
   .layout-pool-name {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     color: var(--text);
   }
@@ -772,8 +796,8 @@
     color: #ffb1a8;
     border-radius: 999px;
     padding: 6px 12px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 14px;
+    font-family: var(--font-ui);
+    font-size: 15px;
     cursor: pointer;
   }
 
@@ -784,7 +808,7 @@
     border: 1px dashed var(--border);
     color: var(--text2);
     text-align: center;
-    font-size: 13px;
+    font-size: 15px;
   }
 
   /* ======= NIGHT TIMER ======= */
@@ -831,7 +855,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-family: var(--font-num);
+    font-size: 16px;
     font-weight: 700;
     color: var(--text2);
     flex-shrink: 0;
@@ -848,8 +873,8 @@
   }
 
   .phase-info { flex: 1; }
-  .phase-name { font-size: 16px; font-weight: 700; color: var(--text); }
-  .phase-duration { font-size: 14px; color: var(--text2); }
+  .phase-name { font-size: 17px; font-weight: 700; color: var(--text); }
+  .phase-duration { font-size: 16px; color: var(--text2); }
 
   .phase-input {
     background: var(--bg);
@@ -858,14 +883,14 @@
     width: 60px;
     padding: 6px;
     border-radius: 6px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 14px;
+    font-family: var(--font-num);
+    font-size: 16px;
     text-align: center;
   }
 
   .night-timer-display {
-    font-family: 'Cinzel', serif;
-    font-size: 80px;
+    font-family: var(--font-num);
+    font-size: 92px;
     font-weight: 900;
     color: var(--accent2);
     text-align: center;
@@ -879,7 +904,7 @@
 
   .night-phase-label {
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text2);
     margin-bottom: 24px;
     min-height: 20px;
@@ -910,7 +935,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     color: #fff;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
@@ -927,7 +952,7 @@
     justify-content: center;
     margin-bottom: 12px;
   }
-  .role-card .role-name { font-size: 18px; letter-spacing: 1px; }
+  .role-card .role-name { font-size: 20px; letter-spacing: 1px; }
 
   .blue-goblet-icon,
   .role-svg-icon,
@@ -1003,7 +1028,7 @@
     border-radius: 10px;
     padding: 10px;
     text-align: center;
-    font-size: 15px;
+    font-size: 16px;
     color: var(--text2);
   }
 
@@ -1016,12 +1041,26 @@
     margin-top: 16px;
   }
 
+  .history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
   .history-title {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text2);
     letter-spacing: 2px;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     text-transform: uppercase;
+  }
+
+  .history-clear-btn {
+    padding: 8px 14px;
+    font-size: 15px;
+    letter-spacing: 1px;
   }
 
   .history-list {
@@ -1037,7 +1076,7 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 8px 12px;
-    font-size: 15px;
+    font-size: 16px;
     color: var(--text2);
     display: flex;
     justify-content: space-between;
@@ -1054,7 +1093,7 @@
   .history-item span:last-child {
     color: var(--text2);
     flex-shrink: 0;
-    font-size: 13px;
+    font-size: 15px;
   }
 
   /* ======= ANIMATION ======= */
@@ -1110,7 +1149,7 @@
 
   .phase-edit-label {
     flex: 1;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text2);
   }
 
@@ -1126,7 +1165,7 @@
     right: 8px;
     background: var(--red);
     color: #fff;
-    font-size: 13px;
+    font-size: 14px;
     padding: 2px 8px;
     border-radius: 10px;
     font-weight: 700;
@@ -1134,7 +1173,7 @@
 
   /* Info text */
   .info-text {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text2);
     text-align: center;
     margin-top: 8px;
@@ -1142,7 +1181,7 @@
   }
 
   .empty-state {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text2);
     padding: 10px;
   }
@@ -1152,7 +1191,7 @@
     max-width: 360px;
     padding: 16px;
     border-radius: 14px;
-    font-size: 19px;
+    font-size: 21px;
   }
 </style>
 </head>
@@ -1168,7 +1207,7 @@
       <span class="moon">🌕</span>
       <h1>Werewolf Tools</h1>
       <h2>狼人殺工具箱</h2>
-      <div class="app-version" id="app-version">v2026.5.19.3</div>
+      <div class="app-version" id="app-version">v2026.5.19.5</div>
     </div>
     <div class="menu-grid">
       <div class="menu-card" onclick="goTo('timer-screen')">
@@ -1220,6 +1259,11 @@
         <button class="btn btn-secondary timer-btn-wide" id="timer-pause-btn" onclick="timerPause()">暫停</button>
       </div>
 
+      <div class="timer-quick-row">
+        <button class="btn btn-secondary btn-sm" id="timer-quick-add-btn" onclick="applyQuickAddTime()">加時 60 秒</button>
+        <button class="btn btn-secondary btn-sm" id="timer-quick-restore-btn" onclick="applyQuickRestoreTime()">還你 10 秒</button>
+      </div>
+
       <div class="timer-preset-row">
         <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-30" data-seconds="30" onclick="applyTimerPreset(30)">重設 30 秒</button>
         <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-60" data-seconds="60" onclick="applyTimerPreset(60)">重設 60 秒</button>
@@ -1228,12 +1272,11 @@
       </div>
 
       <div class="speaker-panel">
-        <div class="panel-title">🎯 號碼次數調整</div>
+        <div class="panel-title">🎯 剩餘加時次數</div>
         <div class="mode-toggle">
           <button class="mode-btn active" id="count-mode-minus" onclick="setAdjustMode('decrease')">− 減少次數</button>
           <button class="mode-btn" id="count-mode-plus" onclick="setAdjustMode('increase')">＋ 增加次數</button>
         </div>
-        <div class="info-text" id="selected-number-text"></div>
         <div class="panel-action-row">
           <button class="btn btn-secondary btn-sm" id="initialize-counts-btn" onclick="initializeExtraCounts()">初始化次數</button>
         </div>
@@ -1252,7 +1295,10 @@
 
       <div class="divider"></div>
       <div class="history-section">
-        <div class="history-title">📋 加時紀錄</div>
+        <div class="history-header">
+          <div class="history-title">📋 加時紀錄</div>
+          <button class="btn btn-secondary history-clear-btn" id="clear-extra-history-btn" onclick="clearExtraHistory()">清除紀錄</button>
+        </div>
         <div class="history-list" id="extra-history"></div>
       </div>
     </div>
@@ -1282,7 +1328,10 @@
       <button class="btn btn-primary full-btn" onclick="doDraw()">✨ 開始抽籤</button>
 
       <div class="history-section" style="margin-top:20px">
-        <div class="history-title">📋 抽籤紀錄</div>
+        <div class="history-header">
+          <div class="history-title">📋 抽籤紀錄</div>
+          <button class="btn btn-secondary history-clear-btn" id="clear-draw-history-btn" onclick="clearDrawHistory()">清除紀錄</button>
+        </div>
         <div class="history-list" id="draw-history"></div>
       </div>
     </div>
@@ -1313,7 +1362,10 @@
       </div>
 
       <div class="history-section" style="margin-top:20px">
-        <div class="history-title">📋 抽籤紀錄</div>
+        <div class="history-header">
+          <div class="history-title">📋 抽籤紀錄</div>
+          <button class="btn btn-secondary history-clear-btn" id="clear-layout-history-btn" onclick="clearLayoutHistory()">清除紀錄</button>
+        </div>
         <div class="history-list" id="layout-history"></div>
       </div>
     </div>
@@ -1336,7 +1388,10 @@
       <div class="all-roles" id="all-roles-display"></div>
 
       <div class="history-section">
-        <div class="history-title">📋 抽籤紀錄</div>
+        <div class="history-header">
+          <div class="history-title">📋 抽籤紀錄</div>
+          <button class="btn btn-secondary history-clear-btn" id="clear-cards-history-btn" onclick="clearCardsHistory()">清除紀錄</button>
+        </div>
         <div class="history-list" id="cards-history"></div>
       </div>
     </div>
@@ -1353,7 +1408,7 @@
     <div class="modal-title">⚙️ 計時設定</div>
     <div class="form-row">
       <div class="form-label">倒數秒數</div>
-      <input class="form-input" type="number" id="set-seconds" min="10" max="300" value="90">
+      <input class="form-input" type="number" id="set-seconds" min="1" max="300" value="90">
     </div>
     <div class="form-row">
       <div class="form-label">時間到第一次提示</div>
@@ -1365,7 +1420,15 @@
     </div>
     <div class="form-row">
       <div class="form-label">加時秒數</div>
-      <input class="form-input" type="number" id="set-extra-secs" min="10" max="300" value="60">
+      <input class="form-input" type="number" id="set-extra-secs" min="1" max="300" value="60">
+    </div>
+    <div class="form-row">
+      <div class="form-label">快捷加時秒數</div>
+      <input class="form-input" type="number" id="set-quick-add-secs" min="1" max="300" value="60">
+    </div>
+    <div class="form-row">
+      <div class="form-label">快捷還你秒數</div>
+      <input class="form-input" type="number" id="set-quick-restore-secs" min="1" max="300" value="10">
     </div>
     <div class="form-row">
       <div class="form-label">初始化次數</div>
@@ -1398,7 +1461,7 @@ const LS = {
   set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-const APP_VERSION = 'v2026.5.19.3';
+const APP_VERSION = 'v2026.5.19.5';
 
 const { createHistoryRecord, formatHistoryTimestamp } = window.HistoryFormatters;
 const {
@@ -1432,6 +1495,8 @@ function syncTimerSettingsInputs() {
   document.getElementById('set-first-warning').value = timerSettings.firstWarning;
   document.getElementById('set-second-warning').value = timerSettings.secondWarning;
   document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
+  document.getElementById('set-quick-add-secs').value = timerSettings.quickAddSecs;
+  document.getElementById('set-quick-restore-secs').value = timerSettings.quickRestoreSecs;
   document.getElementById('set-initial-count').value = timerSettings.initialCount;
 }
 
@@ -1510,6 +1575,7 @@ let timerState = {
   extraCounts: normalizeExtraCounts(LS.get('timerExtraCounts', null), timerSettings.initialCount),
   selectedNum: normalizeSelectedNum(LS.get('timerSelectedNum', null)),
   adjustMode: LS.get('timerAdjustMode', 'decrease') === 'increase' ? 'increase' : 'decrease',
+  alertBase: timerSettings.seconds,
   totalExtra: 0,
   extraHistory: LS.get('extraHistory', [])
 };
@@ -1524,6 +1590,7 @@ function persistTimerSelectionState() {
 
 function initTimerScreen() {
   syncTimerSettingsInputs();
+  updateTimerShortcutButtons();
   renderExtraHistory();
   timerReset();
 }
@@ -1553,22 +1620,20 @@ function updateAdjustModeButtons() {
   document.getElementById('count-mode-plus').classList.toggle('active', timerState.adjustMode === 'increase');
 }
 
+function updateTimerShortcutButtons() {
+  const quickAddBtn = document.getElementById('timer-quick-add-btn');
+  const quickRestoreBtn = document.getElementById('timer-quick-restore-btn');
+
+  if (quickAddBtn) quickAddBtn.textContent = `加時 ${timerSettings.quickAddSecs} 秒`;
+  if (quickRestoreBtn) quickRestoreBtn.textContent = `還你 ${timerSettings.quickRestoreSecs} 秒`;
+}
+
 function updateSelectedNumberText() {
   const selected = timerState.selectedNum;
-  const modeText = timerState.adjustMode === 'increase' ? '增加次數' : '減少次數';
-  const selectedText = document.getElementById('selected-number-text');
   const extraSelectedText = document.getElementById('extra-selected-text');
   const panelTitle = document.getElementById('extra-panel-title');
 
   if (panelTitle) panelTitle.textContent = `⚡ 加時 ${timerSettings.extraSecs} 秒`;
-
-  if (selectedText) {
-    if (selected) {
-      selectedText.textContent = `目前選擇 ${selected} 號，記錄次數 ${timerState.extraCounts[selected]}，點擊號碼會${modeText}`;
-    } else {
-      selectedText.textContent = `尚未選擇號碼，點擊號碼會${modeText}，初始化次數為 ${timerSettings.initialCount}`;
-    }
-  }
 
   if (extraSelectedText) {
     extraSelectedText.textContent = selected ? `本次加時對象：${selected} 號` : '請先在上方選擇號碼';
@@ -1606,7 +1671,7 @@ function renderSpeakerGrid() {
     b.type = 'button';
     b.className = 'speaker-card' + (timerState.selectedNum === i ? ' selected' : '');
     b.dataset.num = i;
-    b.innerHTML = `<span class="speaker-card-number">${i} 號</span><span class="speaker-card-meta"><span>次數</span><span class="speaker-count">${timerState.extraCounts[i]}</span></span>`;
+    b.innerHTML = `<span class="speaker-card-number">${i} 號</span><span class="speaker-card-meta"><span>剩餘</span><span class="speaker-count">${timerState.extraCounts[i]}</span></span>`;
     b.onclick = () => { handleSpeakerSelect(i); };
     g.appendChild(b);
   }
@@ -1648,7 +1713,8 @@ function timerTick() {
   const alertStage = getTimerAlertStage(
     timerState.remaining,
     timerSettings.firstWarning,
-    timerSettings.secondWarning
+    timerSettings.secondWarning,
+    timerState.alertBase
   );
   if (alertStage === 'first-warning') playWarning();
   if (alertStage === 'second-warning') playUrgentWarning();
@@ -1672,6 +1738,26 @@ function timerStart() {
 function timerPause() {
   if (!timerState.running) return;
   timerStop();
+}
+
+function adjustTimerRemaining(secondsToAdd) {
+  secondsToAdd = parseInt(secondsToAdd, 10);
+  if (!Number.isFinite(secondsToAdd) || secondsToAdd <= 0) return;
+
+  timerState.remaining = Math.max(1, timerState.remaining + secondsToAdd);
+  timerState.totalExtra += secondsToAdd;
+  timerState.alertBase = Math.max(timerState.alertBase, timerState.remaining);
+  closeExtraPanel();
+  updateTimerDisplay();
+  updateTimerControls();
+}
+
+function applyQuickAddTime() {
+  adjustTimerRemaining(timerSettings.quickAddSecs);
+}
+
+function applyQuickRestoreTime() {
+  adjustTimerRemaining(timerSettings.quickRestoreSecs);
 }
 
 function timerToggle() {
@@ -1702,8 +1788,10 @@ function applyTimerPreset(seconds) {
 function timerReset() {
   timerStop();
   timerState.remaining = timerSettings.seconds;
+  timerState.alertBase = timerSettings.seconds;
   timerState.totalExtra = 0;
   closeExtraPanel();
+  updateTimerShortcutButtons();
   updateTimerDisplay();
   renderSpeakerGrid();
   updateExtraRemainText();
@@ -1727,8 +1815,8 @@ function closeExtraPanel() {
 function updateExtraRemainText() {
   const selected = timerState.selectedNum;
   document.getElementById('extra-remain-text').textContent = selected
-    ? `${selected} 號目前記錄次數：${timerState.extraCounts[selected]} 次`
-    : `尚未選擇號碼，初始化次數為 ${timerSettings.initialCount}`;
+    ? `${selected} 號剩餘加時次數：${timerState.extraCounts[selected]} 次`
+    : '請先在上方選擇號碼';
 }
 
 function applyExtraTime() {
@@ -1739,6 +1827,7 @@ function applyExtraTime() {
   const addSecs = timerSettings.extraSecs;
   timerState.remaining += addSecs;
   timerState.totalExtra += addSecs;
+  timerState.alertBase = Math.max(timerState.alertBase, timerState.remaining);
 
   // history
   const rec = createHistoryRecord({ nums, secs: addSecs });
@@ -1765,12 +1854,25 @@ function renderExtraHistory() {
   el.innerHTML = h.map(r => `<div class="history-item"><span>${r.nums.join(', ')} 號</span><span>+${r.secs}秒 ${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
+function confirmClearHistory(name) {
+  return window.confirm(`確定要清除${name}嗎？`);
+}
+
+function clearExtraHistory() {
+  if (!confirmClearHistory('加時紀錄')) return;
+  timerState.extraHistory = [];
+  LS.set('extraHistory', timerState.extraHistory);
+  renderExtraHistory();
+}
+
 function saveTimerSettings() {
   timerSettings = normalizeTimerSettings({
     seconds: document.getElementById('set-seconds').value,
     firstWarning: document.getElementById('set-first-warning').value,
     secondWarning: document.getElementById('set-second-warning').value,
     extraSecs: document.getElementById('set-extra-secs').value,
+    quickAddSecs: document.getElementById('set-quick-add-secs').value,
+    quickRestoreSecs: document.getElementById('set-quick-restore-secs').value,
     initialCount: document.getElementById('set-initial-count').value
   });
   LS.set('timerSettings', timerSettings);
@@ -1855,6 +1957,13 @@ function renderDrawHistory() {
   const el = document.getElementById('draw-history');
   if (!drawHistory.length) { el.innerHTML = '<div class="empty-state">尚無紀錄</div>'; return; }
   el.innerHTML = drawHistory.map(r => `<div class="history-item"><span>${r.num} 號・${r.order}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
+}
+
+function clearDrawHistory() {
+  if (!confirmClearHistory('抽發言順序紀錄')) return;
+  drawHistory = [];
+  LS.set('drawHistory', drawHistory);
+  renderDrawHistory();
 }
 
 // ===== LAYOUT DRAW =====
@@ -1973,6 +2082,13 @@ function renderLayoutHistory() {
   el.innerHTML = layoutHistory.map((r) => `<div class="history-item"><span>${r.name}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
+function clearLayoutHistory() {
+  if (!confirmClearHistory('抽版型紀錄')) return;
+  layoutHistory = [];
+  LS.set('layoutHistory', layoutHistory);
+  renderLayoutHistory();
+}
+
 // ===== CARDS =====
 const roles = [
   { id: 'magician', name: '魔術師', emoji: '<img class="role-image-icon" src="pic/魔術師.jpg" alt="">', cls: 'magician' },
@@ -2032,6 +2148,13 @@ function renderCardsHistory() {
   const el = document.getElementById('cards-history');
   if (!cardsHistory.length) { el.innerHTML = '<div class="empty-state">尚無紀錄</div>'; return; }
   el.innerHTML = cardsHistory.map(r => `<div class="history-item"><span>${r.names}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
+}
+
+function clearCardsHistory() {
+  if (!confirmClearHistory('百變抽牌紀錄')) return;
+  cardsHistory = [];
+  LS.set('cardsHistory', cardsHistory);
+  renderCardsHistory();
 }
 
 // ===== SERVICE WORKER =====
