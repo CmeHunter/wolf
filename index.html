@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="狼人殺工具">
-<title>狼人殺工具箱</title>
+<title>狼人殺工具箱 v2026.5.19.1</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
@@ -40,6 +40,10 @@
     background: var(--bg);
     color: var(--text);
     font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -110,7 +114,7 @@
 
   .home-title h1 {
     font-family: 'Cinzel', serif;
-    font-size: 14px;
+    font-size: 16px;
     letter-spacing: 6px;
     color: var(--gold);
     text-transform: uppercase;
@@ -118,10 +122,25 @@
   }
 
   .home-title h2 {
-    font-size: 28px;
+    font-size: 34px;
     font-weight: 900;
     color: var(--text);
     text-shadow: 0 0 30px rgba(201,168,76,0.3);
+  }
+
+  .app-version {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(201,168,76,0.35);
+    background: rgba(201,168,76,0.08);
+    color: var(--gold2);
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    letter-spacing: 1px;
   }
 
   .menu-grid {
@@ -129,14 +148,14 @@
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     width: 100%;
-    max-width: 360px;
+    max-width: 388px;
   }
 
   .menu-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 24px 16px;
+    padding: 28px 18px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -157,9 +176,9 @@
   .menu-card:active { transform: scale(0.96); }
   .menu-card:active::before { opacity: 1; }
 
-  .menu-card .icon { font-size: 36px; margin-bottom: 10px; display: block; }
-  .menu-card .label { font-size: 15px; font-weight: 700; color: var(--text); }
-  .menu-card .sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+  .menu-card .icon { font-size: 42px; margin-bottom: 12px; display: block; }
+  .menu-card .label { font-size: 18px; font-weight: 700; color: var(--text); }
+  .menu-card .sub { font-size: 14px; color: var(--text2); margin-top: 6px; }
 
   .menu-card:nth-child(1) { --card-glow: radial-gradient(circle, rgba(201,168,76,0.15), transparent); border-color: rgba(201,168,76,0.2); }
   .menu-card:nth-child(2) { --card-glow: radial-gradient(circle, rgba(41,128,185,0.15), transparent); border-color: rgba(41,128,185,0.2); }
@@ -186,7 +205,7 @@
     padding: 8px 14px;
     border-radius: 20px;
     font-family: 'Noto Serif TC', serif;
-    font-size: 13px;
+    font-size: 15px;
     cursor: pointer;
     transition: all 0.2s;
     margin-right: 16px;
@@ -195,7 +214,7 @@
   .back-btn:active { background: var(--border); }
 
   .screen-title {
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--gold);
     flex: 1;
@@ -207,7 +226,7 @@
     color: var(--text2);
     padding: 8px 12px;
     border-radius: 20px;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
     transition: all 0.2s;
   }
@@ -223,14 +242,14 @@
 
   .timer-circle-wrap {
     position: relative;
-    width: 240px;
-    height: 240px;
+    width: 260px;
+    height: 260px;
     margin-bottom: 30px;
   }
 
   .timer-svg {
-    width: 240px;
-    height: 240px;
+    width: 260px;
+    height: 260px;
     transform: rotate(-90deg);
   }
 
@@ -254,7 +273,7 @@
 
   .timer-number {
     font-family: 'Cinzel', serif;
-    font-size: 68px;
+    font-size: 80px;
     font-weight: 900;
     color: var(--text);
     line-height: 1;
@@ -264,24 +283,50 @@
   .timer-number.warning { color: var(--red2); text-shadow: 0 0 20px rgba(231,76,60,0.5); }
 
   .timer-label {
-    font-size: 12px;
+    font-size: 16px;
     color: var(--text2);
     letter-spacing: 2px;
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   .timer-controls {
     display: flex;
-    gap: 16px;
+    gap: 12px;
+    margin-bottom: 14px;
+    width: 100%;
+    max-width: 388px;
+    flex-wrap: wrap;
+  }
+
+  .timer-btn-wide {
+    flex: 1 1 160px;
+  }
+
+  .timer-preset-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 388px;
     margin-bottom: 24px;
   }
 
+  .timer-preset-btn {
+    flex: 1 1 140px;
+  }
+
+  .timer-preset-btn.active {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
+
   .btn {
-    padding: 14px 28px;
+    padding: 16px 30px;
     border-radius: 50px;
     border: none;
     font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -289,6 +334,10 @@
   }
 
   .btn:active { transform: scale(0.95); }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 
   .btn-primary { background: var(--gold); color: #000; }
   .btn-primary:active { background: var(--gold2); }
@@ -298,7 +347,7 @@
   .btn-blue { background: var(--blue); color: #fff; }
   .btn-green { background: var(--green); color: #fff; }
   .btn-purple { background: var(--accent); color: #fff; }
-  .btn-sm { padding: 10px 18px; font-size: 14px; }
+  .btn-sm { padding: 12px 18px; font-size: 16px; }
 
   /* Extra time panel */
   .extra-time-panel {
@@ -314,7 +363,7 @@
   .extra-time-panel.visible { display: block; }
 
   .panel-title {
-    font-size: 14px;
+    font-size: 17px;
     color: var(--gold);
     font-weight: 700;
     margin-bottom: 14px;
@@ -335,7 +384,7 @@
     border-radius: 8px;
     padding: 10px 0;
     font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -350,9 +399,23 @@
 
   .num-btn:active { transform: scale(0.93); }
 
-  .extra-action-row {
+  .extra-action-row,
+  .panel-action-row,
+  .exclude-action-row {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .extra-action-row > *,
+  .panel-action-row > *,
+  .exclude-action-row > * {
+    flex: 1 1 140px;
+  }
+
+  .panel-action-row {
+    margin-top: 12px;
   }
 
   .speaker-panel {
@@ -379,7 +442,7 @@
     border-radius: 10px;
     padding: 10px 12px;
     font-family: 'Noto Serif TC', serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -422,7 +485,7 @@
   }
 
   .speaker-card-number {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 700;
     color: var(--text);
   }
@@ -432,12 +495,12 @@
     align-items: center;
     justify-content: space-between;
     color: var(--text2);
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .speaker-count {
     font-family: 'Cinzel', serif;
-    font-size: 24px;
+    font-size: 28px;
     color: var(--gold);
     line-height: 1;
   }
@@ -494,7 +557,7 @@
   }
 
   .form-label {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--text2);
     flex: 1;
   }
@@ -506,8 +569,8 @@
     padding: 10px 14px;
     border-radius: 10px;
     font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
-    width: 90px;
+    font-size: 18px;
+    width: 110px;
     text-align: center;
     -webkit-appearance: none;
   }
@@ -530,7 +593,7 @@
   }
 
   .section-label {
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text2);
     margin-bottom: 10px;
     letter-spacing: 1px;
@@ -545,7 +608,7 @@
     padding: 30px 20px;
     text-align: center;
     margin-bottom: 24px;
-    min-height: 140px;
+    min-height: 156px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -554,7 +617,7 @@
 
   .result-big {
     font-family: 'Cinzel', serif;
-    font-size: 72px;
+    font-size: 80px;
     font-weight: 900;
     color: var(--gold);
     text-shadow: 0 0 40px rgba(201,168,76,0.4);
@@ -562,7 +625,7 @@
   }
 
   .result-sub {
-    font-size: 18px;
+    font-size: 22px;
     color: var(--text2);
     margin-top: 8px;
   }
@@ -574,7 +637,7 @@
     color: var(--gold);
     padding: 6px 16px;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 16px;
     margin-top: 10px;
   }
 
@@ -596,7 +659,7 @@
     border: none;
     color: var(--text2);
     font-family: 'Noto Serif TC', serif;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     transition: all 0.2s;
   }
@@ -612,7 +675,7 @@
   }
 
   .layout-result-name {
-    font-size: 32px;
+    font-size: 38px;
     font-weight: 900;
     color: var(--gold);
     line-height: 1.35;
@@ -633,12 +696,19 @@
     gap: 10px;
     align-items: center;
     margin-top: 12px;
+    flex-wrap: wrap;
   }
 
   .layout-name-input {
-    flex: 1;
+    flex: 1 1 220px;
     width: auto;
+    min-width: 0;
     text-align: left;
+  }
+
+  #add-layout-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 
   .layout-pool-list {
@@ -661,7 +731,7 @@
   }
 
   .layout-pool-name {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text);
   }
@@ -673,7 +743,7 @@
     border-radius: 999px;
     padding: 6px 12px;
     font-family: 'Noto Serif TC', serif;
-    font-size: 12px;
+    font-size: 14px;
     cursor: pointer;
   }
 
@@ -731,7 +801,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--text2);
     flex-shrink: 0;
@@ -748,8 +818,8 @@
   }
 
   .phase-info { flex: 1; }
-  .phase-name { font-size: 14px; font-weight: 700; color: var(--text); }
-  .phase-duration { font-size: 12px; color: var(--text2); }
+  .phase-name { font-size: 16px; font-weight: 700; color: var(--text); }
+  .phase-duration { font-size: 14px; color: var(--text2); }
 
   .phase-input {
     background: var(--bg);
@@ -821,24 +891,33 @@
     cursor: default;
   }
 
-  .role-card .role-emoji { font-size: 44px; margin-bottom: 10px; }
-  .role-card .role-name { font-size: 16px; letter-spacing: 1px; }
+  .role-card .role-emoji { font-size: 48px; margin-bottom: 12px; }
+  .role-card .role-name { font-size: 18px; letter-spacing: 1px; }
 
-  .blue-goblet-icon {
+  .blue-goblet-icon,
+  .role-svg-icon {
     width: 44px;
     height: 44px;
     display: inline-block;
     vertical-align: middle;
   }
 
-  .role-emoji .blue-goblet-icon {
+  .role-emoji .blue-goblet-icon,
+  .role-emoji .role-svg-icon {
     width: 44px;
     height: 44px;
   }
 
-  .r-emoji .blue-goblet-icon {
+  .r-emoji .blue-goblet-icon,
+  .r-emoji .role-svg-icon {
     width: 24px;
     height: 24px;
+  }
+
+  @media (max-width: 380px) {
+    #add-layout-btn {
+      width: 100%;
+    }
   }
 
   .role-card.magician { background: linear-gradient(135deg, #1a1a6e, #3d3d9e); }
@@ -879,11 +958,11 @@
     border-radius: 10px;
     padding: 10px;
     text-align: center;
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text2);
   }
 
-  .role-chip .r-emoji { display: block; font-size: 24px; margin-bottom: 4px; }
+  .role-chip .r-emoji { display: block; font-size: 28px; margin-bottom: 6px; }
 
   /* ======= HISTORY ======= */
   .history-section {
@@ -893,7 +972,7 @@
   }
 
   .history-title {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text2);
     letter-spacing: 2px;
     margin-bottom: 10px;
@@ -913,11 +992,12 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 8px 12px;
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text2);
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 10px;
   }
 
@@ -929,7 +1009,7 @@
   .history-item span:last-child {
     color: var(--text2);
     flex-shrink: 0;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   /* ======= ANIMATION ======= */
@@ -1001,7 +1081,7 @@
     right: 8px;
     background: var(--red);
     color: #fff;
-    font-size: 11px;
+    font-size: 13px;
     padding: 2px 8px;
     border-radius: 10px;
     font-weight: 700;
@@ -1009,11 +1089,17 @@
 
   /* Info text */
   .info-text {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text2);
     text-align: center;
     margin-top: 8px;
     line-height: 1.6;
+  }
+
+  .empty-state {
+    font-size: 14px;
+    color: var(--text2);
+    padding: 10px;
   }
 
   .full-btn {
@@ -1021,7 +1107,7 @@
     max-width: 360px;
     padding: 16px;
     border-radius: 14px;
-    font-size: 17px;
+    font-size: 19px;
   }
 </style>
 </head>
@@ -1037,12 +1123,13 @@
       <span class="moon">🌕</span>
       <h1>Werewolf Tools</h1>
       <h2>狼人殺工具箱</h2>
+      <div class="app-version" id="app-version">v2026.5.19.1</div>
     </div>
     <div class="menu-grid">
       <div class="menu-card" onclick="goTo('timer-screen')">
         <span class="icon">⏱️</span>
         <div class="label">發言計時</div>
-        <div class="sub">90秒倒數</div>
+        <div class="sub">30 / 60 / 90 / 120 秒</div>
       </div>
       <div class="menu-card" onclick="goTo('draw-screen')">
         <span class="icon">🎲</span>
@@ -1079,13 +1166,20 @@
         </svg>
         <div class="timer-inner">
           <div class="timer-number" id="timer-display">90</div>
-          <div class="timer-label">SECONDS</div>
+          <div class="timer-label">倒數秒數</div>
         </div>
       </div>
 
       <div class="timer-controls">
-        <button class="btn btn-primary" id="timer-start-btn" onclick="timerToggle()">開始</button>
-        <button class="btn btn-secondary" onclick="timerReset()">重置</button>
+        <button class="btn btn-primary timer-btn-wide" id="timer-start-btn" onclick="timerStart()">開始</button>
+        <button class="btn btn-secondary timer-btn-wide" id="timer-pause-btn" onclick="timerPause()">暫停</button>
+      </div>
+
+      <div class="timer-preset-row">
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-30" data-seconds="30" onclick="applyTimerPreset(30)">重設 30 秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-60" data-seconds="60" onclick="applyTimerPreset(60)">重設 60 秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-90" data-seconds="90" onclick="applyTimerPreset(90)">重設 90 秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-120" data-seconds="120" onclick="applyTimerPreset(120)">重設 120 秒</button>
       </div>
 
       <div class="speaker-panel">
@@ -1095,6 +1189,9 @@
           <button class="mode-btn" id="count-mode-plus" onclick="setAdjustMode('increase')">＋ 增加次數</button>
         </div>
         <div class="info-text" id="selected-number-text"></div>
+        <div class="panel-action-row">
+          <button class="btn btn-secondary btn-sm" id="initialize-counts-btn" onclick="initializeExtraCounts()">初始化次數</button>
+        </div>
         <div class="speaker-grid" id="speaker-grid"></div>
       </div>
 
@@ -1124,12 +1221,16 @@
     </div>
     <div class="draw-content">
       <div class="result-card" id="draw-result-card">
-        <div style="font-size:40px; color: var(--text2);">🎲</div>
-        <div style="font-size:14px; color: var(--text2); margin-top:10px;">按下抽籤開始</div>
+        <div style="font-size:48px; color: var(--text2);">🎲</div>
+        <div style="font-size:18px; color: var(--text2); margin-top:10px;">按下抽籤開始</div>
       </div>
 
       <div class="exclude-section">
         <div class="section-label">🚫 排除號碼（點擊切換）</div>
+        <div class="exclude-action-row" style="margin-bottom:12px;">
+          <button class="btn btn-secondary btn-sm" id="draw-select-all-btn" onclick="selectAllDrawNumbers()">全選號碼</button>
+          <button class="btn btn-secondary btn-sm" id="draw-exclude-all-btn" onclick="excludeAllDrawNumbers()">全排除號碼</button>
+        </div>
         <div class="number-grid" id="exclude-grid"></div>
       </div>
 
@@ -1150,7 +1251,7 @@
     </div>
     <div class="layout-content">
       <div class="result-card" id="layout-result-card">
-        <div style="font-size:40px; color: var(--text2);">🎴</div>
+        <div style="font-size:48px; color: var(--text2);">🎴</div>
         <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
       </div>
 
@@ -1181,8 +1282,8 @@
     </div>
     <div class="cards-content">
       <div class="cards-result" id="cards-result">
-        <div class="role-card empty"><span style="font-size:36px">?</span><div style="margin-top:8px;font-size:13px">待抽取</div></div>
-        <div class="role-card empty"><span style="font-size:36px">?</span><div style="margin-top:8px;font-size:13px">待抽取</div></div>
+        <div class="role-card empty"><span style="font-size:42px">?</span><div style="margin-top:8px;font-size:16px">待抽取</div></div>
+        <div class="role-card empty"><span style="font-size:42px">?</span><div style="margin-top:8px;font-size:16px">待抽取</div></div>
       </div>
 
       <button class="btn btn-primary full-btn" onclick="doCardDraw()" style="margin-bottom:20px">🎴 重新抽籤</button>
@@ -1210,16 +1311,16 @@
       <input class="form-input" type="number" id="set-seconds" min="10" max="300" value="90">
     </div>
     <div class="form-row">
-      <div class="form-label">警告提示（最後幾秒）</div>
-      <input class="form-input" type="number" id="set-warning" min="5" max="60" value="15">
+      <div class="form-label">倒數提示音（固定 15 秒與最後 3 秒）</div>
+      <input class="form-input" type="number" id="set-warning" value="15" disabled>
     </div>
     <div class="form-row">
       <div class="form-label">加時秒數</div>
       <input class="form-input" type="number" id="set-extra-secs" min="10" max="300" value="60">
     </div>
     <div class="form-row">
-      <div class="form-label">加時次數上限</div>
-      <input class="form-input" type="number" id="set-extra-count" min="1" max="12" value="3">
+      <div class="form-label">初始化次數</div>
+      <input class="form-input" type="number" id="set-initial-count" min="0" max="12" value="1">
     </div>
     <div style="margin-top:8px; display:flex; gap:10px;">
       <button class="btn btn-primary" style="flex:1" onclick="saveTimerSettings()">儲存</button>
@@ -1229,6 +1330,7 @@
 </div>
 
 <script src="history-formatters.js"></script>
+<script src="timer-utils.js"></script>
 <script>
 // ===== STARS =====
 (function() {
@@ -1247,7 +1349,18 @@ const LS = {
   set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
+const APP_VERSION = 'v2026.5.19.1';
+
 const { createHistoryRecord, formatHistoryTimestamp } = window.HistoryFormatters;
+const {
+  URGENT_WARNING_SECONDS,
+  createDefaultExtraCounts,
+  getTimerAlertStage,
+  normalizeExtraCounts,
+  normalizeTimerSettings
+} = window.TimerUtils;
+
+document.title = `狼人殺工具箱 ${APP_VERSION}`;
 
 // ===== NAVIGATION =====
 function goTo(id) {
@@ -1303,8 +1416,13 @@ function beep(freq, dur, type='sine', vol=0.3) {
 }
 
 function playWarning() {
-  beep(880, 0.1, 'square', 0.2);
-  setTimeout(() => beep(880, 0.1, 'square', 0.2), 150);
+  beep(880, 0.12, 'square', 0.2);
+}
+
+function playUrgentWarning() {
+  beep(988, 0.16, 'square', 0.24);
+  setTimeout(() => beep(988, 0.16, 'square', 0.24), 180);
+  setTimeout(() => beep(988, 0.16, 'square', 0.18), 360);
 }
 
 function playEnd() {
@@ -1320,23 +1438,8 @@ function playNightEnd() {
 }
 
 // ===== TIMER =====
-let timerSettings = LS.get('timerSettings', { seconds: 90, warning: 15, extraSecs: 60, extraCount: 3 });
-
-function createDefaultExtraCounts() {
-  const counts = {};
-  for (let i = 1; i <= 12; i++) counts[i] = 1;
-  return counts;
-}
-
-function normalizeExtraCounts(saved) {
-  const counts = createDefaultExtraCounts();
-  if (!saved || typeof saved !== 'object') return counts;
-  for (let i = 1; i <= 12; i++) {
-    const value = parseInt(saved[i], 10);
-    if (Number.isFinite(value) && value >= 0) counts[i] = value;
-  }
-  return counts;
-}
+let timerSettings = normalizeTimerSettings(LS.get('timerSettings', null));
+LS.set('timerSettings', timerSettings);
 
 function normalizeSelectedNum(saved) {
   const value = parseInt(saved, 10);
@@ -1347,11 +1450,10 @@ let timerState = {
   remaining: timerSettings.seconds,
   running: false,
   interval: null,
-  extraCounts: normalizeExtraCounts(LS.get('timerExtraCounts', null)),
+  extraCounts: normalizeExtraCounts(LS.get('timerExtraCounts', null), timerSettings.initialCount),
   selectedNum: normalizeSelectedNum(LS.get('timerSelectedNum', null)),
   adjustMode: LS.get('timerAdjustMode', 'decrease') === 'increase' ? 'increase' : 'decrease',
   totalExtra: 0,
-  extraCountUsed: 0,
   extraHistory: LS.get('extraHistory', [])
 };
 
@@ -1367,9 +1469,29 @@ function initTimerScreen() {
   document.getElementById('set-seconds').value = timerSettings.seconds;
   document.getElementById('set-warning').value = timerSettings.warning;
   document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
-  document.getElementById('set-extra-count').value = timerSettings.extraCount;
+  document.getElementById('set-initial-count').value = timerSettings.initialCount;
   renderExtraHistory();
   timerReset();
+}
+
+function updateTimerControls() {
+  const startBtn = document.getElementById('timer-start-btn');
+  const pauseBtn = document.getElementById('timer-pause-btn');
+  const hasStarted = timerState.remaining < timerSettings.seconds || timerState.totalExtra > 0;
+
+  if (startBtn) {
+    startBtn.disabled = timerState.running;
+    startBtn.textContent = timerState.running ? '執行中' : (hasStarted ? '繼續' : '開始');
+  }
+
+  if (pauseBtn) {
+    pauseBtn.disabled = !timerState.running;
+  }
+
+  document.querySelectorAll('.timer-preset-btn').forEach((button) => {
+    const seconds = parseInt(button.dataset.seconds, 10);
+    button.classList.toggle('active', seconds === timerSettings.seconds);
+  });
 }
 
 function updateAdjustModeButtons() {
@@ -1388,9 +1510,9 @@ function updateSelectedNumberText() {
 
   if (selectedText) {
     if (selected) {
-      selectedText.textContent = `目前選擇 ${selected} 號，次數 ${timerState.extraCounts[selected]}，點擊號碼會${modeText}`;
+      selectedText.textContent = `目前選擇 ${selected} 號，記錄次數 ${timerState.extraCounts[selected]}，點擊號碼會${modeText}`;
     } else {
-      selectedText.textContent = `尚未選擇號碼，點擊號碼會${modeText}`;
+      selectedText.textContent = `尚未選擇號碼，點擊號碼會${modeText}，初始化次數為 ${timerSettings.initialCount}`;
     }
   }
 
@@ -1404,6 +1526,13 @@ function setAdjustMode(mode) {
   persistTimerSelectionState();
   updateAdjustModeButtons();
   updateSelectedNumberText();
+}
+
+function initializeExtraCounts() {
+  timerState.extraCounts = createDefaultExtraCounts(timerSettings.initialCount);
+  persistTimerSelectionState();
+  renderSpeakerGrid();
+  updateExtraRemainText();
 }
 
 function handleSpeakerSelect(num) {
@@ -1462,23 +1591,36 @@ function timerTick() {
   timerState.remaining--;
   updateTimerDisplay();
 
-  if (timerState.remaining <= timerSettings.warning && timerState.remaining > 0) playWarning();
-  if (timerState.remaining === 0) {
+  const alertStage = getTimerAlertStage(timerState.remaining, timerSettings.warning, URGENT_WARNING_SECONDS);
+  if (alertStage === 'warning') playWarning();
+  if (alertStage === 'urgent') playUrgentWarning();
+  if (alertStage === 'end') {
     playEnd();
     timerStop();
     openExtraPanel();
   }
 }
 
+function timerStart() {
+  if (timerState.running) return;
+  if (timerState.remaining <= 0) timerReset();
+  getAudioCtx();
+  timerState.running = true;
+  clearInterval(timerState.interval);
+  timerState.interval = setInterval(timerTick, 1000);
+  updateTimerControls();
+}
+
+function timerPause() {
+  if (!timerState.running) return;
+  timerStop();
+}
+
 function timerToggle() {
   if (timerState.running) {
-    timerStop();
+    timerPause();
   } else {
-    if (timerState.remaining <= 0) timerReset();
-    getAudioCtx(); // unlock audio
-    timerState.running = true;
-    timerState.interval = setInterval(timerTick, 1000);
-    document.getElementById('timer-start-btn').textContent = '暫停';
+    timerStart();
   }
 }
 
@@ -1486,14 +1628,23 @@ function timerStop() {
   timerState.running = false;
   clearInterval(timerState.interval);
   timerState.interval = null;
-  document.getElementById('timer-start-btn').textContent = '開始';
+  updateTimerControls();
+}
+
+function applyTimerPreset(seconds) {
+  timerSettings = normalizeTimerSettings({
+    ...timerSettings,
+    seconds
+  });
+  LS.set('timerSettings', timerSettings);
+  document.getElementById('set-seconds').value = timerSettings.seconds;
+  timerReset();
 }
 
 function timerReset() {
   timerStop();
   timerState.remaining = timerSettings.seconds;
   timerState.totalExtra = 0;
-  timerState.extraCountUsed = 0;
   closeExtraPanel();
   updateTimerDisplay();
   renderSpeakerGrid();
@@ -1501,6 +1652,7 @@ function timerReset() {
   document.getElementById('pulse-ring').classList.remove('active');
   document.querySelector('.timer-circle-wrap').classList.remove('shaking');
   document.getElementById('timer-prog').style.stroke = 'var(--gold)';
+  updateTimerControls();
 }
 
 function openExtraPanel() {
@@ -1515,20 +1667,16 @@ function closeExtraPanel() {
 }
 
 function updateExtraRemainText() {
-  const remain = Math.max(0, timerSettings.extraCount - timerState.extraCountUsed);
-  document.getElementById('extra-remain-text').textContent = `剩餘加時次數：${remain} 次`;
+  const selected = timerState.selectedNum;
+  document.getElementById('extra-remain-text').textContent = selected
+    ? `${selected} 號目前記錄次數：${timerState.extraCounts[selected]} 次`
+    : `尚未選擇號碼，初始化次數為 ${timerSettings.initialCount}`;
 }
 
 function applyExtraTime() {
   if (!timerState.selectedNum) { alert('請先在上方選擇使用加時的號碼'); return; }
 
-  if (timerState.extraCountUsed >= timerSettings.extraCount) {
-    alert(`已達加時次數上限（${timerSettings.extraCount} 次）`);
-    return;
-  }
-
   const nums = [timerState.selectedNum];
-  timerState.extraCountUsed++;
 
   const addSecs = timerSettings.extraSecs;
   timerState.remaining += addSecs;
@@ -1547,25 +1695,24 @@ function applyExtraTime() {
   renderExtraHistory();
 
   // restart
-  timerState.running = true;
-  timerState.interval = setInterval(timerTick, 1000);
-  document.getElementById('timer-start-btn').textContent = '暫停';
   document.getElementById('timer-prog').style.stroke = 'var(--gold)';
   document.getElementById('timer-display').classList.remove('warning');
+  timerStart();
 }
 
 function renderExtraHistory() {
   const el = document.getElementById('extra-history');
   const h = timerState.extraHistory;
-  if (!h.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
+  if (!h.length) { el.innerHTML = '<div class="empty-state">尚無紀錄</div>'; return; }
   el.innerHTML = h.map(r => `<div class="history-item"><span>${r.nums.join(', ')} 號</span><span>+${r.secs}秒 ${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
 function saveTimerSettings() {
-  timerSettings.seconds = parseInt(document.getElementById('set-seconds').value) || 90;
-  timerSettings.warning = parseInt(document.getElementById('set-warning').value) || 15;
-  timerSettings.extraSecs = parseInt(document.getElementById('set-extra-secs').value) || 60;
-  timerSettings.extraCount = parseInt(document.getElementById('set-extra-count').value) || 3;
+  timerSettings = normalizeTimerSettings({
+    seconds: document.getElementById('set-seconds').value,
+    extraSecs: document.getElementById('set-extra-secs').value,
+    initialCount: document.getElementById('set-initial-count').value
+  });
   LS.set('timerSettings', timerSettings);
   closeModal('timer-settings');
   timerReset();
@@ -1589,25 +1736,32 @@ function buildExcludeGrid() {
     b.textContent = i;
     b.style.opacity = excludedNums.includes(i) ? '0.4' : '1';
     b.style.textDecoration = excludedNums.includes(i) ? 'line-through' : 'none';
-    b.onclick = () => toggleExclude(i, b);
+    b.onclick = () => toggleExclude(i);
     g.appendChild(b);
   }
 }
 
-function toggleExclude(n, btn) {
-  const idx = excludedNums.indexOf(n);
-  if (idx >= 0) {
-    excludedNums.splice(idx, 1);
-    btn.classList.remove('selected');
-    btn.style.opacity = '1';
-    btn.style.textDecoration = 'none';
-  } else {
-    excludedNums.push(n);
-    btn.classList.add('selected');
-    btn.style.opacity = '0.4';
-    btn.style.textDecoration = 'line-through';
-  }
+function setExcludedNums(nums) {
+  excludedNums = Array.from(new Set(nums)).sort((a, b) => a - b);
   LS.set('excludedNums', excludedNums);
+  buildExcludeGrid();
+}
+
+function selectAllDrawNumbers() {
+  setExcludedNums([]);
+}
+
+function excludeAllDrawNumbers() {
+  setExcludedNums(Array.from({ length: 12 }, (_, index) => index + 1));
+}
+
+function toggleExclude(n) {
+  if (excludedNums.includes(n)) {
+    setExcludedNums(excludedNums.filter((num) => num !== n));
+    return;
+  }
+
+  setExcludedNums([...excludedNums, n]);
 }
 
 function doDraw() {
@@ -1639,7 +1793,7 @@ function doDraw() {
 
 function renderDrawHistory() {
   const el = document.getElementById('draw-history');
-  if (!drawHistory.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
+  if (!drawHistory.length) { el.innerHTML = '<div class="empty-state">尚無紀錄</div>'; return; }
   el.innerHTML = drawHistory.map(r => `<div class="history-item"><span>${r.num} 號・${r.order}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
@@ -1672,7 +1826,7 @@ function renderLayoutResult(name = '') {
 
   if (!name) {
     el.innerHTML = `
-      <div style="font-size:40px; color: var(--text2);">🎴</div>
+      <div style="font-size:48px; color: var(--text2);">🎴</div>
       <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
     `;
     return;
@@ -1753,7 +1907,7 @@ function renderLayoutHistory() {
   const el = document.getElementById('layout-history');
   if (!el) return;
   if (!layoutHistory.length) {
-    el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>';
+    el.innerHTML = '<div class="empty-state">尚無紀錄</div>';
     return;
   }
   el.innerHTML = layoutHistory.map((r) => `<div class="history-item"><span>${r.name}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
@@ -1762,7 +1916,7 @@ function renderLayoutHistory() {
 // ===== CARDS =====
 const roles = [
   { id: 'magician', name: '魔術師', emoji: '🎩', cls: 'magician' },
-  { id: 'dreamcatcher', name: '攝夢人', emoji: '<svg viewBox="0 0 64 64" class="blue-goblet-icon" aria-label="藍色酒杯" role="img"><path fill="#9fd7ff" d="M18 8h28c0 13.6-5.1 22-14 24.6V42h10v6H22v-6h10v-9.4C23.1 30 18 21.6 18 8Z"/><path fill="#4ca6ff" d="M23 12h18c-.8 8.7-4.4 14-9 16-4.6-2-8.2-7.3-9-16Z"/><rect x="25" y="48" width="14" height="8" rx="3" fill="#7ec3ff"/></svg>', cls: 'dreamcatcher' },
+  { id: 'dreamcatcher', name: '攝夢人', emoji: '<svg viewBox="0 0 64 64" class="role-svg-icon dreamcatcher-icon" aria-label="睡眠月亮圖示" role="img"><circle cx="34" cy="28" r="16" fill="#f5d26a"/><circle cx="41" cy="23" r="16" fill="#4a0060"/><path fill="#fff1b6" d="M14 15l2.1 4.2 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7-3.4-3.3 4.7-.7L14 15Z"/><path fill="none" stroke="#fff7d4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M20 41h11l-6 6h10l-6 6"/></svg>', cls: 'dreamcatcher' },
   { id: 'witch', name: '女巫', emoji: '🧙‍♀️', cls: 'witch' },
   { id: 'bear', name: '熊', emoji: '🐻', cls: 'bear' },
   { id: 'hunter', name: '獵人', emoji: '🏹', cls: 'hunter' },
@@ -1816,7 +1970,7 @@ function doCardDraw() {
 
 function renderCardsHistory() {
   const el = document.getElementById('cards-history');
-  if (!cardsHistory.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px">尚無紀錄</div>'; return; }
+  if (!cardsHistory.length) { el.innerHTML = '<div class="empty-state">尚無紀錄</div>'; return; }
   el.innerHTML = cardsHistory.map(r => `<div class="history-item"><span>${r.names}</span><span>${formatHistoryTimestamp(r.at || r.time)}</span></div>`).join('');
 }
 
