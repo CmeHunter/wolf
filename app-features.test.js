@@ -84,7 +84,7 @@ test('timer utils expose configurable first and second countdown alerts', () => 
 test('index HTML contains updated controls, labels, icon, and layout guardrails', () => {
   const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
-  assert.match(html, /v2026\.5\.19\.1/);
+  assert.match(html, /v2026\.5\.19\.2/);
   assert.match(html, /id="timer-pause-btn"/);
   assert.match(html, /id="timer-preset-30"/);
   assert.match(html, /id="timer-preset-60"/);
@@ -94,8 +94,12 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(html, /id="draw-exclude-all-btn"/);
   assert.match(html, /id="initialize-counts-btn"/);
   assert.match(html, /初始化次數/);
-  assert.match(html, /固定 15 秒/);
-  assert.match(html, /id="set-warning"[^>]*disabled/);
+  assert.match(html, /時間到第一次提示/);
+  assert.match(html, /時間到第二次提示/);
+  assert.match(html, /id="set-first-warning"[^>]*value="15"/);
+  assert.match(html, /id="set-second-warning"[^>]*value="5"/);
+  assert.ok(!html.includes('id="set-warning"'));
+  assert.ok(!html.includes('固定 15 秒'));
   assert.ok(!html.includes('加時次數上限'));
   assert.ok(!html.includes('aria-label="藍色酒杯"'));
   assert.match(html, /aria-label="[^\"]*睡[^\"]*"/);
