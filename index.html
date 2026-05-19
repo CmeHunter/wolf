@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="狼人殺工具">
-<title>狼人殺工具箱 v2026.5.19.5</title>
+<title>狼人殺工具箱 v2026.5.19.6</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
@@ -1213,7 +1213,7 @@
       <div class="menu-card" onclick="goTo('timer-screen')">
         <span class="icon"><img class="menu-icon-image" src="pic/發言計時.jpg" alt=""></span>
         <div class="label">發言計時</div>
-        <div class="sub">30 / 60 / 90 / 120 秒</div>
+        <div class="sub">倒數計時</div>
       </div>
       <div class="menu-card" onclick="goTo('draw-screen')">
         <span class="icon"><img class="menu-icon-image" src="pic/抽發言順序.jpg" alt=""></span>
@@ -1260,15 +1260,20 @@
       </div>
 
       <div class="timer-quick-row">
-        <button class="btn btn-secondary btn-sm" id="timer-quick-add-btn" onclick="applyQuickAddTime()">加時 60 秒</button>
-        <button class="btn btn-secondary btn-sm" id="timer-quick-restore-btn" onclick="applyQuickRestoreTime()">還你 10 秒</button>
+        <button class="btn btn-secondary btn-sm" id="timer-quick-add-btn" onclick="applyQuickIncreaseTime()">增加5秒</button>
+        <button class="btn btn-secondary btn-sm" id="timer-quick-restore-btn" onclick="applyQuickDecreaseTime()">減少5秒</button>
       </div>
 
       <div class="timer-preset-row">
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-30" data-seconds="30" onclick="applyTimerPreset(30)">重設 30 秒</button>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-60" data-seconds="60" onclick="applyTimerPreset(60)">重設 60 秒</button>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-90" data-seconds="90" onclick="applyTimerPreset(90)">重設 90 秒</button>
-        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-120" data-seconds="120" onclick="applyTimerPreset(120)">重設 120 秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-30" data-seconds="30" onclick="applyTimerPreset(30)">重設30秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-60" data-seconds="60" onclick="applyTimerPreset(60)">重設60秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-90" data-seconds="90" onclick="applyTimerPreset(90)">重設90秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-120" data-seconds="120" onclick="applyTimerPreset(120)">重設120秒</button>
+      </div>
+
+      <div class="timer-preset-row" id="timer-preset-extra-row" hidden>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-a" data-seconds="0" onclick="applyTimerPreset(this.dataset.seconds)" hidden>重設A秒</button>
+        <button class="btn btn-secondary btn-sm timer-preset-btn" id="timer-preset-b" data-seconds="0" onclick="applyTimerPreset(this.dataset.seconds)" hidden>重設B秒</button>
       </div>
 
       <div class="speaker-panel">
@@ -1278,7 +1283,7 @@
           <button class="mode-btn" id="count-mode-plus" onclick="setAdjustMode('increase')">＋ 增加次數</button>
         </div>
         <div class="panel-action-row">
-          <button class="btn btn-secondary btn-sm" id="initialize-counts-btn" onclick="initializeExtraCounts()">初始化次數</button>
+          <button class="btn btn-secondary btn-sm" id="initialize-counts-btn" onclick="initializeExtraCounts()">所有號碼重設為1(依照設定檔)</button>
         </div>
         <div class="speaker-grid" id="speaker-grid"></div>
       </div>
@@ -1423,12 +1428,16 @@
       <input class="form-input" type="number" id="set-extra-secs" min="1" max="300" value="60">
     </div>
     <div class="form-row">
-      <div class="form-label">快捷加時秒數</div>
-      <input class="form-input" type="number" id="set-quick-add-secs" min="1" max="300" value="60">
+      <div class="form-label">增減秒數</div>
+      <input class="form-input" type="number" id="set-adjust-secs" min="1" max="300" value="5">
     </div>
     <div class="form-row">
-      <div class="form-label">快捷還你秒數</div>
-      <input class="form-input" type="number" id="set-quick-restore-secs" min="1" max="300" value="10">
+      <div class="form-label">自訂重設A</div>
+      <input class="form-input" type="number" id="set-reset-a-secs" min="0" max="300" value="0">
+    </div>
+    <div class="form-row">
+      <div class="form-label">自訂重設B</div>
+      <input class="form-input" type="number" id="set-reset-b-secs" min="0" max="300" value="0">
     </div>
     <div class="form-row">
       <div class="form-label">初始化次數</div>
@@ -1461,7 +1470,7 @@ const LS = {
   set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-const APP_VERSION = 'v2026.5.19.5';
+const APP_VERSION = 'v2026.5.19.6';
 
 const { createHistoryRecord, formatHistoryTimestamp } = window.HistoryFormatters;
 const {
@@ -1495,8 +1504,9 @@ function syncTimerSettingsInputs() {
   document.getElementById('set-first-warning').value = timerSettings.firstWarning;
   document.getElementById('set-second-warning').value = timerSettings.secondWarning;
   document.getElementById('set-extra-secs').value = timerSettings.extraSecs;
-  document.getElementById('set-quick-add-secs').value = timerSettings.quickAddSecs;
-  document.getElementById('set-quick-restore-secs').value = timerSettings.quickRestoreSecs;
+  document.getElementById('set-adjust-secs').value = timerSettings.adjustSecs;
+  document.getElementById('set-reset-a-secs').value = timerSettings.resetASecs;
+  document.getElementById('set-reset-b-secs').value = timerSettings.resetBSecs;
   document.getElementById('set-initial-count').value = timerSettings.initialCount;
 }
 
@@ -1590,7 +1600,6 @@ function persistTimerSelectionState() {
 
 function initTimerScreen() {
   syncTimerSettingsInputs();
-  updateTimerShortcutButtons();
   renderExtraHistory();
   timerReset();
 }
@@ -1624,8 +1633,42 @@ function updateTimerShortcutButtons() {
   const quickAddBtn = document.getElementById('timer-quick-add-btn');
   const quickRestoreBtn = document.getElementById('timer-quick-restore-btn');
 
-  if (quickAddBtn) quickAddBtn.textContent = `加時 ${timerSettings.quickAddSecs} 秒`;
-  if (quickRestoreBtn) quickRestoreBtn.textContent = `還你 ${timerSettings.quickRestoreSecs} 秒`;
+  if (quickAddBtn) quickAddBtn.textContent = `增加${timerSettings.adjustSecs}秒`;
+  if (quickRestoreBtn) quickRestoreBtn.textContent = `減少${timerSettings.adjustSecs}秒`;
+}
+
+function updateTimerPresetButtons() {
+  const extraRow = document.getElementById('timer-preset-extra-row');
+  const presetAButton = document.getElementById('timer-preset-a');
+  const presetBButton = document.getElementById('timer-preset-b');
+  const resetASecs = timerSettings.resetASecs;
+  const resetBSecs = timerSettings.resetBSecs;
+
+  document.querySelectorAll('.timer-preset-btn').forEach((button) => {
+    const seconds = parseInt(button.dataset.seconds, 10);
+    if (Number.isFinite(seconds) && seconds > 0) button.textContent = `重設${seconds}秒`;
+  });
+
+  if (presetAButton) {
+    presetAButton.hidden = resetASecs <= 0;
+    presetAButton.disabled = resetASecs <= 0;
+    presetAButton.dataset.seconds = String(resetASecs);
+    if (resetASecs > 0) presetAButton.textContent = `重設${resetASecs}秒`;
+  }
+
+  if (presetBButton) {
+    presetBButton.hidden = resetBSecs <= 0;
+    presetBButton.disabled = resetBSecs <= 0;
+    presetBButton.dataset.seconds = String(resetBSecs);
+    if (resetBSecs > 0) presetBButton.textContent = `重設${resetBSecs}秒`;
+  }
+
+  if (extraRow) extraRow.hidden = resetASecs <= 0 && resetBSecs <= 0;
+}
+
+function updateInitializeCountsButton() {
+  const button = document.getElementById('initialize-counts-btn');
+  if (button) button.textContent = `所有號碼重設為${timerSettings.initialCount}(依照設定檔)`;
 }
 
 function updateSelectedNumberText() {
@@ -1742,22 +1785,26 @@ function timerPause() {
 
 function adjustTimerRemaining(secondsToAdd) {
   secondsToAdd = parseInt(secondsToAdd, 10);
-  if (!Number.isFinite(secondsToAdd) || secondsToAdd <= 0) return;
+  if (!Number.isFinite(secondsToAdd) || secondsToAdd === 0) return;
 
-  timerState.remaining = Math.max(1, timerState.remaining + secondsToAdd);
-  timerState.totalExtra += secondsToAdd;
+  const nextRemaining = Math.max(1, timerState.remaining + secondsToAdd);
+  const appliedDelta = nextRemaining - timerState.remaining;
+  if (appliedDelta === 0) return;
+
+  timerState.remaining = nextRemaining;
+  timerState.totalExtra += appliedDelta;
   timerState.alertBase = Math.max(timerState.alertBase, timerState.remaining);
   closeExtraPanel();
   updateTimerDisplay();
   updateTimerControls();
 }
 
-function applyQuickAddTime() {
-  adjustTimerRemaining(timerSettings.quickAddSecs);
+function applyQuickIncreaseTime() {
+  adjustTimerRemaining(timerSettings.adjustSecs);
 }
 
-function applyQuickRestoreTime() {
-  adjustTimerRemaining(timerSettings.quickRestoreSecs);
+function applyQuickDecreaseTime() {
+  adjustTimerRemaining(-timerSettings.adjustSecs);
 }
 
 function timerToggle() {
@@ -1776,6 +1823,9 @@ function timerStop() {
 }
 
 function applyTimerPreset(seconds) {
+  seconds = parseInt(seconds, 10);
+  if (!Number.isFinite(seconds) || seconds < 1) return;
+
   timerSettings = normalizeTimerSettings({
     ...timerSettings,
     seconds
@@ -1792,6 +1842,8 @@ function timerReset() {
   timerState.totalExtra = 0;
   closeExtraPanel();
   updateTimerShortcutButtons();
+  updateTimerPresetButtons();
+  updateInitializeCountsButton();
   updateTimerDisplay();
   renderSpeakerGrid();
   updateExtraRemainText();
@@ -1871,8 +1923,9 @@ function saveTimerSettings() {
     firstWarning: document.getElementById('set-first-warning').value,
     secondWarning: document.getElementById('set-second-warning').value,
     extraSecs: document.getElementById('set-extra-secs').value,
-    quickAddSecs: document.getElementById('set-quick-add-secs').value,
-    quickRestoreSecs: document.getElementById('set-quick-restore-secs').value,
+    adjustSecs: document.getElementById('set-adjust-secs').value,
+    resetASecs: document.getElementById('set-reset-a-secs').value,
+    resetBSecs: document.getElementById('set-reset-b-secs').value,
     initialCount: document.getElementById('set-initial-count').value
   });
   LS.set('timerSettings', timerSettings);

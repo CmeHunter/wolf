@@ -14,6 +14,9 @@
     firstWarning: 15,
     secondWarning: 5,
     extraSecs: 60,
+    adjustSecs: 5,
+    resetASecs: 0,
+    resetBSecs: 0,
     initialCount: 1
   };
 
@@ -38,15 +41,31 @@
     return { firstWarning, secondWarning };
   }
 
+  function resolveAdjustSecs(source) {
+    if (source.adjustSecs != null) return source.adjustSecs;
+
+    const legacyShortcutValues = [
+      parseInt(source.quickAddSecs, 10),
+      parseInt(source.quickRestoreSecs, 10)
+    ].filter((value) => Number.isFinite(value) && value > 0);
+
+    if (legacyShortcutValues.length) return Math.min(...legacyShortcutValues);
+
+    return DEFAULT_TIMER_SETTINGS.adjustSecs;
+  }
+
   function normalizeTimerSettings(saved) {
     const source = saved && typeof saved === 'object' ? saved : {};
     const { firstWarning, secondWarning } = normalizeWarningThresholds(source);
 
     return {
-      seconds: toIntInRange(source.seconds, DEFAULT_TIMER_SETTINGS.seconds, 10, 300),
+      seconds: toIntInRange(source.seconds, DEFAULT_TIMER_SETTINGS.seconds, 1, 300),
       firstWarning,
       secondWarning,
-      extraSecs: toIntInRange(source.extraSecs, DEFAULT_TIMER_SETTINGS.extraSecs, 10, 300),
+      extraSecs: toIntInRange(source.extraSecs, DEFAULT_TIMER_SETTINGS.extraSecs, 1, 300),
+      adjustSecs: toIntInRange(resolveAdjustSecs(source), DEFAULT_TIMER_SETTINGS.adjustSecs, 1, 300),
+      resetASecs: toIntInRange(source.resetASecs, DEFAULT_TIMER_SETTINGS.resetASecs, 0, 300),
+      resetBSecs: toIntInRange(source.resetBSecs, DEFAULT_TIMER_SETTINGS.resetBSecs, 0, 300),
       initialCount: toIntInRange(
         source.initialCount ?? source.extraCount,
         DEFAULT_TIMER_SETTINGS.initialCount,
@@ -82,7 +101,8 @@
   function getTimerAlertStage(
     remaining,
     firstWarningThreshold = DEFAULT_TIMER_SETTINGS.firstWarning,
-    secondWarningThreshold = DEFAULT_TIMER_SETTINGS.secondWarning
+    secondWarningThreshold = DEFAULT_TIMER_SETTINGS.secondWarning,
+    alertBase = null
   ) {
     const remainingSeconds = parseInt(remaining, 10);
     if (!Number.isFinite(remainingSeconds) || remainingSeconds < 0) return 'none';
@@ -94,8 +114,12 @@
       firstWarning - 1
     );
 
-    if (remainingSeconds === firstWarning) return 'first-warning';
-    if (remainingSeconds <= secondWarning) return 'second-warning';
+    const parsedAlertBase = parseInt(alertBase, 10);
+    const canTriggerFirstWarning = !Number.isFinite(parsedAlertBase) || parsedAlertBase > firstWarning;
+    const canTriggerSecondWarning = !Number.isFinite(parsedAlertBase) || parsedAlertBase > secondWarning;
+
+    if (canTriggerFirstWarning && remainingSeconds === firstWarning) return 'first-warning';
+    if (canTriggerSecondWarning && remainingSeconds <= secondWarning) return 'second-warning';
 
     return 'none';
   }
