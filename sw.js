@@ -1,4 +1,4 @@
-const CACHE_NAME = 'werewolf-tools-v2026.5.19.2';
+const CACHE_NAME = 'werewolf-tools-v2026.5.19.3';
 const ASSETS = [
   './index.html',
   './history-formatters.js',
@@ -6,6 +6,16 @@ const ASSETS = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './pic/發言計時.jpg',
+  './pic/抽發言順序.jpg',
+  './pic/抽版型.jpg',
+  './pic/百變.jpg',
+  './pic/魔術師.jpg',
+  './pic/攝夢人.jpg',
+  './pic/女巫.jpg',
+  './pic/熊.jpg',
+  './pic/獵人.jpg',
+  './pic/預言家.jpg',
   'https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Cinzel:wght@400;700;900&display=swap'
 ];
 
@@ -14,7 +24,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       // Cache local assets reliably; fonts may fail on first offline install
-      return cache.addAll(['./index.html', './history-formatters.js', './timer-utils.js', './manifest.json', './icon-192.png', './icon-512.png'])
+      return cache.addAll(['./index.html', './history-formatters.js', './timer-utils.js', './manifest.json', './icon-192.png', './icon-512.png', './pic/發言計時.jpg', './pic/抽發言順序.jpg', './pic/抽版型.jpg', './pic/百變.jpg', './pic/魔術師.jpg', './pic/攝夢人.jpg', './pic/女巫.jpg', './pic/熊.jpg', './pic/獵人.jpg', './pic/預言家.jpg'])
         .then(() => cache.add('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Cinzel:wght@400;700;900&display=swap').catch(() => {}));
     })
   );

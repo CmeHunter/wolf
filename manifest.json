@@ -1,7 +1,7 @@
 {
   "name": "狼人殺工具箱",
   "short_name": "狼人殺",
-  "description": "發言計時、抽發言順序、夜間流程、版型抽籤",
+  "description": "發言計時、抽發言順序、抽版型、百變2.0",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",

@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="狼人殺工具">
-<title>狼人殺工具箱 v2026.5.19.2</title>
+<title>狼人殺工具箱 v2026.5.19.3</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
@@ -176,7 +176,15 @@
   .menu-card:active { transform: scale(0.96); }
   .menu-card:active::before { opacity: 1; }
 
-  .menu-card .icon { font-size: 42px; margin-bottom: 12px; display: block; }
+  .menu-card .icon { margin-bottom: 12px; display: block; }
+  .menu-icon-image {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+  }
   .menu-card .label { font-size: 18px; font-weight: 700; color: var(--text); }
   .menu-card .sub { font-size: 14px; color: var(--text2); margin-top: 6px; }
 
@@ -218,6 +226,19 @@
     font-weight: 700;
     color: var(--gold);
     flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .screen-title-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 9px;
+    border: 1px solid rgba(255,255,255,0.18);
+    flex-shrink: 0;
   }
 
   .settings-btn {
@@ -615,6 +636,15 @@
     justify-content: center;
   }
 
+  .result-card-icon {
+    width: 68px;
+    height: 68px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.16);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+  }
+
   .result-big {
     font-family: 'Cinzel', serif;
     font-size: 80px;
@@ -891,25 +921,40 @@
     cursor: default;
   }
 
-  .role-card .role-emoji { font-size: 48px; margin-bottom: 12px; }
+  .role-card .role-emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
   .role-card .role-name { font-size: 18px; letter-spacing: 1px; }
 
   .blue-goblet-icon,
-  .role-svg-icon {
+  .role-svg-icon,
+  .role-image-icon {
     width: 44px;
     height: 44px;
     display: inline-block;
     vertical-align: middle;
   }
 
+  .role-image-icon {
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+  }
+
   .role-emoji .blue-goblet-icon,
-  .role-emoji .role-svg-icon {
-    width: 44px;
-    height: 44px;
+  .role-emoji .role-svg-icon,
+  .role-emoji .role-image-icon {
+    width: 56px;
+    height: 56px;
   }
 
   .r-emoji .blue-goblet-icon,
-  .r-emoji .role-svg-icon {
+  .r-emoji .role-svg-icon,
+  .r-emoji .role-image-icon {
     width: 24px;
     height: 24px;
   }
@@ -922,10 +967,10 @@
 
   .role-card.magician { background: linear-gradient(135deg, #1a1a6e, #3d3d9e); }
   .role-card.dreamcatcher { background: linear-gradient(135deg, #4a0060, #9b2fae); }
-  .role-card.witch { background: linear-gradient(135deg, #0d4a2a, #1a8a4a); }
+  .role-card.witch { background: linear-gradient(135deg, #5a0000, #a01010); }
   .role-card.bear { background: linear-gradient(135deg, #5a3010, #8a4a20); }
-  .role-card.hunter { background: linear-gradient(135deg, #5a0000, #a01010); }
-  .role-card.seer { background: linear-gradient(135deg, #004a4a, #008a8a); }
+  .role-card.hunter { background: linear-gradient(135deg, #0d4a2a, #1a8a4a); }
+  .role-card.seer { background: linear-gradient(135deg, #8e7ae6, #d6cbff); }
   .role-card.empty {
     background: var(--card);
     border: 2px dashed var(--border);
@@ -1123,26 +1168,26 @@
       <span class="moon">🌕</span>
       <h1>Werewolf Tools</h1>
       <h2>狼人殺工具箱</h2>
-      <div class="app-version" id="app-version">v2026.5.19.2</div>
+      <div class="app-version" id="app-version">v2026.5.19.3</div>
     </div>
     <div class="menu-grid">
       <div class="menu-card" onclick="goTo('timer-screen')">
-        <span class="icon">⏱️</span>
+        <span class="icon"><img class="menu-icon-image" src="pic/發言計時.jpg" alt=""></span>
         <div class="label">發言計時</div>
         <div class="sub">30 / 60 / 90 / 120 秒</div>
       </div>
       <div class="menu-card" onclick="goTo('draw-screen')">
-        <span class="icon">🎲</span>
+        <span class="icon"><img class="menu-icon-image" src="pic/抽發言順序.jpg" alt=""></span>
         <div class="label">抽發言順序</div>
         <div class="sub">1~12號隨機</div>
       </div>
       <div class="menu-card" onclick="goTo('night-screen')">
-        <span class="icon">🎴</span>
-        <div class="label">版型抽籤</div>
+        <span class="icon"><img class="menu-icon-image" src="pic/抽版型.jpg" alt=""></span>
+        <div class="label">抽版型</div>
         <div class="sub">可編輯待抽清單</div>
       </div>
       <div class="menu-card" onclick="goTo('cards-screen')">
-        <span class="icon">🃏</span>
+        <span class="icon"><img class="menu-icon-image" src="pic/百變.jpg" alt=""></span>
         <div class="label">百變2.0</div>
         <div class="sub">6選2</div>
       </div>
@@ -1153,7 +1198,7 @@
   <div class="screen" id="timer-screen">
     <div class="screen-header">
       <button class="back-btn" onclick="goBack()">← 返回</button>
-      <div class="screen-title">⏱ 發言計時</div>
+      <div class="screen-title"><img class="screen-title-icon" src="pic/發言計時.jpg" alt="">發言計時</div>
       <button class="settings-btn" onclick="openModal('timer-settings')">⚙️</button>
     </div>
     <div class="timer-content">
@@ -1217,11 +1262,11 @@
   <div class="screen" id="draw-screen">
     <div class="screen-header">
       <button class="back-btn" onclick="goBack()">← 返回</button>
-      <div class="screen-title">🎲 抽發言順序</div>
+      <div class="screen-title"><img class="screen-title-icon" src="pic/抽發言順序.jpg" alt="">抽發言順序</div>
     </div>
     <div class="draw-content">
       <div class="result-card" id="draw-result-card">
-        <div style="font-size:48px; color: var(--text2);">🎲</div>
+        <img class="result-card-icon" src="pic/抽發言順序.jpg" alt="">
         <div style="font-size:18px; color: var(--text2); margin-top:10px;">按下抽籤開始</div>
       </div>
 
@@ -1247,11 +1292,11 @@
   <div class="screen" id="night-screen">
     <div class="screen-header">
       <button class="back-btn" onclick="goBack()">← 返回</button>
-      <div class="screen-title">🎴 版型抽籤</div>
+      <div class="screen-title"><img class="screen-title-icon" src="pic/抽版型.jpg" alt="">抽版型</div>
     </div>
     <div class="layout-content">
       <div class="result-card" id="layout-result-card">
-        <div style="font-size:48px; color: var(--text2);">🎴</div>
+        <img class="result-card-icon" src="pic/抽版型.jpg" alt="">
         <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
       </div>
 
@@ -1261,7 +1306,7 @@
         <div class="panel-title">🗂 待抽版型</div>
         <div class="info-text">預設可直接抽，也可以自行新增或移除版型。</div>
         <div class="layout-add-row">
-          <input class="form-input layout-name-input" type="text" id="layout-name-input" placeholder="輸入新版本型名稱">
+          <input class="form-input layout-name-input" type="text" id="layout-name-input" placeholder="輸入新版型名稱">
           <button class="btn btn-secondary btn-sm" id="add-layout-btn" onclick="addLayoutPreset()">＋ 新增</button>
         </div>
         <div class="layout-pool-list" id="layout-pool-list"></div>
@@ -1278,7 +1323,7 @@
   <div class="screen" id="cards-screen">
     <div class="screen-header">
       <button class="back-btn" onclick="goBack()">← 返回</button>
-      <div class="screen-title">🃏 百變2.0</div>
+      <div class="screen-title"><img class="screen-title-icon" src="pic/百變.jpg" alt="">百變2.0</div>
     </div>
     <div class="cards-content">
       <div class="cards-result" id="cards-result">
@@ -1353,7 +1398,7 @@ const LS = {
   set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
 
-const APP_VERSION = 'v2026.5.19.2';
+const APP_VERSION = 'v2026.5.19.3';
 
 const { createHistoryRecord, formatHistoryTimestamp } = window.HistoryFormatters;
 const {
@@ -1841,7 +1886,7 @@ function renderLayoutResult(name = '') {
 
   if (!name) {
     el.innerHTML = `
-      <div style="font-size:48px; color: var(--text2);">🎴</div>
+      <img class="result-card-icon" src="pic/抽版型.jpg" alt="">
       <div class="result-sub" id="layout-result-name">按下抽籤開始</div>
     `;
     return;
@@ -1930,12 +1975,12 @@ function renderLayoutHistory() {
 
 // ===== CARDS =====
 const roles = [
-  { id: 'magician', name: '魔術師', emoji: '🎩', cls: 'magician' },
-  { id: 'dreamcatcher', name: '攝夢人', emoji: '<svg viewBox="0 0 64 64" class="role-svg-icon dreamcatcher-icon" aria-label="睡眠月亮圖示" role="img"><circle cx="34" cy="28" r="16" fill="#f5d26a"/><circle cx="41" cy="23" r="16" fill="#4a0060"/><path fill="#fff1b6" d="M14 15l2.1 4.2 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7-3.4-3.3 4.7-.7L14 15Z"/><path fill="none" stroke="#fff7d4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M20 41h11l-6 6h10l-6 6"/></svg>', cls: 'dreamcatcher' },
-  { id: 'witch', name: '女巫', emoji: '🧙‍♀️', cls: 'witch' },
-  { id: 'bear', name: '熊', emoji: '🐻', cls: 'bear' },
-  { id: 'hunter', name: '獵人', emoji: '🏹', cls: 'hunter' },
-  { id: 'seer', name: '預言家', emoji: '🔮', cls: 'seer' },
+  { id: 'magician', name: '魔術師', emoji: '<img class="role-image-icon" src="pic/魔術師.jpg" alt="">', cls: 'magician' },
+  { id: 'dreamcatcher', name: '攝夢人', emoji: '<img class="role-image-icon" src="pic/攝夢人.jpg" alt="">', cls: 'dreamcatcher' },
+  { id: 'witch', name: '女巫', emoji: '<img class="role-image-icon" src="pic/女巫.jpg" alt="">', cls: 'witch' },
+  { id: 'bear', name: '熊', emoji: '<img class="role-image-icon" src="pic/熊.jpg" alt="">', cls: 'bear' },
+  { id: 'hunter', name: '獵人', emoji: '<img class="role-image-icon" src="pic/獵人.jpg" alt="">', cls: 'hunter' },
+  { id: 'seer', name: '預言家', emoji: '<img class="role-image-icon" src="pic/預言家.jpg" alt="">', cls: 'seer' },
 ];
 
 let cardsHistory = LS.get('cardsHistory', []);

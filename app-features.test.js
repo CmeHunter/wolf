@@ -83,8 +83,11 @@ test('timer utils expose configurable first and second countdown alerts', () => 
 
 test('index HTML contains updated controls, labels, icon, and layout guardrails', () => {
   const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+  const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
+  const manifest = fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8');
 
-  assert.match(html, /v2026\.5\.19\.2/);
+  assert.match(html, /v2026\.5\.19\.3/);
+  assert.match(sw, /werewolf-tools-v2026\.5\.19\.3/);
   assert.match(html, /id="timer-pause-btn"/);
   assert.match(html, /id="timer-preset-30"/);
   assert.match(html, /id="timer-preset-60"/);
@@ -101,8 +104,11 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.ok(!html.includes('id="set-warning"'));
   assert.ok(!html.includes('固定 15 秒'));
   assert.ok(!html.includes('加時次數上限'));
+  assert.match(html, /輸入新版型名稱/);
+  assert.ok(!html.includes('輸入新版本型名稱'));
+  assert.ok(!html.includes('版型抽籤'));
+  assert.match(html, /抽版型/);
   assert.ok(!html.includes('aria-label="藍色酒杯"'));
-  assert.match(html, /aria-label="[^\"]*睡[^\"]*"/);
   assert.match(html, /\.layout-add-row\s*\{[^}]*flex-wrap:\s*wrap/s);
   assert.match(html, /\.home-title h2\s*\{[^}]*font-size:\s*34px/s);
   assert.match(html, /\.menu-card \.label\s*\{[^}]*font-size:\s*18px/s);
@@ -110,6 +116,30 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(html, /\.timer-number\s*\{[^}]*font-size:\s*80px/s);
   assert.match(html, /\.phase-num\s*\{[^}]*font-size:\s*14px/s);
   assert.match(html, /\.phase-duration\s*\{[^}]*font-size:\s*14px/s);
+  assert.match(html, /\.role-card\.witch\s*\{[^}]*#5a0000[^}]*#a01010/s);
+  assert.match(html, /\.role-card\.hunter\s*\{[^}]*#0d4a2a[^}]*#1a8a4a/s);
+  assert.match(html, /\.role-card\.seer\s*\{[^}]*#8e7ae6[^}]*#d6cbff/s);
+  assert.match(html, /src="pic\/發言計時\.jpg"/);
+  assert.match(html, /src="pic\/抽發言順序\.jpg"/);
+  assert.match(html, /src="pic\/抽版型\.jpg"/);
+  assert.match(html, /src="pic\/百變\.jpg"/);
+  assert.match(html, /src="pic\/魔術師\.jpg"/);
+  assert.match(html, /src="pic\/攝夢人\.jpg"/);
+  assert.match(html, /src="pic\/女巫\.jpg"/);
+  assert.match(html, /src="pic\/熊\.jpg"/);
+  assert.match(html, /src="pic\/獵人\.jpg"/);
+  assert.match(html, /src="pic\/預言家\.jpg"/);
+  assert.match(sw, /'\.\/pic\/發言計時\.jpg'/);
+  assert.match(sw, /'\.\/pic\/抽發言順序\.jpg'/);
+  assert.match(sw, /'\.\/pic\/抽版型\.jpg'/);
+  assert.match(sw, /'\.\/pic\/百變\.jpg'/);
+  assert.match(sw, /'\.\/pic\/魔術師\.jpg'/);
+  assert.match(sw, /'\.\/pic\/攝夢人\.jpg'/);
+  assert.match(sw, /'\.\/pic\/女巫\.jpg'/);
+  assert.match(sw, /'\.\/pic\/熊\.jpg'/);
+  assert.match(sw, /'\.\/pic\/獵人\.jpg'/);
+  assert.match(sw, /'\.\/pic\/預言家\.jpg'/);
+  assert.match(manifest, /抽版型/);
   assert.ok(!html.includes('font-size:12px;color:var(--text2);padding:8px">尚無紀錄'));
 });
 
