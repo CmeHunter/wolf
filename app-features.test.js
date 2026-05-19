@@ -277,7 +277,7 @@ test('index HTML contains updated controls, labels, icon, and layout guardrails'
   assert.match(html, /\.menu-card \.label\s*\{[^}]*font-size:\s*20px/s);
   assert.match(html, /\.screen-title\s*\{[^}]*font-size:\s*22px/s);
   assert.match(html, /\.timer-content\s*\{[^}]*padding:\s*44px 20px 30px/s);
-  assert.match(html, /\.timer-number\s*\{[^}]*font-family:\s*var\(--font-num\);[^}]*font-size:\s*112px/s);
+  assert.match(html, /\.timer-number\s*\{[^}]*font-family:\s*Arial,\s*sans-serif;[^}]*font-size:\s*112px/s);
   assert.match(html, /\.btn\s*\{[^}]*font-size:\s*20px/s);
   assert.match(html, /\.btn-sm\s*\{[^}]*font-size:\s*18px/s);
   assert.match(html, /\.form-label\s*\{[^}]*font-size:\s*17px/s);
